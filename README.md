@@ -2,6 +2,8 @@
 
 An educational healthcare workspace for managing patient records, running machine-learning-assisted heart-risk assessments, and reviewing account-private history. A prediction is not a diagnosis or a substitute for professional medical advice.
 
+**Live site:** [Cardia Heart Health Workspace](https://cardiac-omega.vercel.app/)
+
 ## Problem and objectives
 
 Heart-health measurements can be difficult to review consistently. This project demonstrates a complete web workflow that captures patient context, applies a reproducible classification pipeline, and keeps predictions available for later review. It is designed as an explainable internship project, not a clinical product.
