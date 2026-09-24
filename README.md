@@ -80,7 +80,7 @@ Backend: Render blueprint at root `render.yaml`. Frontend: Vercel project root `
 
 ## Tests and evaluation
 
-Backend tests are in `backend/tests`; run `pytest` after installing requirements. Build the frontend with `npm run build`. Run `python train_model.py` to generate actual evaluation values and model files. Training requires network access on the first run unless the dataset is provided locally. Current metrics belong to the generated metadata file and are not hardcoded here.
+Backend tests are in `backend/tests`; run `pytest` after installing requirements. Build the frontend with `npm run build`. Run `python train_model.py` to generate actual evaluation values and model files. Training requires network access on the first run unless the dataset is provided locally. At runtime, the dashboard reads model metrics from the generated metadata file; the figures above are from the measured development run.
 
 ## Screenshots
 
