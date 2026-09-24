@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { addDoc, collection, deleteDoc, doc, getDocs, orderBy, query, serverTimestamp, where } from 'firebase/firestore';
 import { deleteObject, getBytes, getStorage, ref, uploadBytes } from 'firebase/storage';
@@ -43,6 +43,7 @@ export default function MedicalRecords({ user, patients, notify }) {
   const [recordType, setRecordType] = useState('visit-note');
   const [summary, setSummary] = useState('');
   const [file, setFile] = useState(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     let active = true;
@@ -103,8 +104,7 @@ export default function MedicalRecords({ user, patients, notify }) {
       setTitle('');
       setSummary('');
       setFile(null);
-      const fileInput = event.currentTarget.querySelector('input[type=file]');
-      if (fileInput) fileInput.value = '';
+      if (fileInputRef.current) fileInputRef.current.value = '';
       notify('Health record saved to the selected patient.', 'success');
     } catch (error) {
       if (uploadedPath) {
@@ -153,7 +153,7 @@ export default function MedicalRecords({ user, patients, notify }) {
           <label>Record type<select required value={recordType} onChange={event => setRecordType(event.target.value)}>{recordTypes.map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
         </div>
         <label>Clinical summary, symptoms, or findings<textarea maxLength="5000" rows="4" value={summary} onChange={event => setSummary(event.target.value)} placeholder="Add relevant history, symptoms, lab findings, or care notes."/></label>
-        <label>Attachment (optional)<input type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" onChange={chooseFile}/><small>PDF or image, up to 10 MB. Files are stored privately in Firebase Storage.</small></label>
+        <label>Attachment (optional)<input type="file" ref={fileInputRef} accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" onChange={chooseFile}/><small>PDF or image, up to 10 MB. Files are stored privately in Firebase Storage.</small></label>
         {file && <div className="privacy-note"><FileText size={15}/>{file.name} · {formatSize(file.size)}</div>}
         <div className="assessment-submit"><span><ShieldCheck size={15}/> Owner-scoped access; files are not shared by public download URL.</span><button className="btn primary" disabled={busy}>{busy ? 'Saving record…' : <><Upload size={16}/> Save health record</>}</button></div>
       </form> : <div className="empty"><div className="empty-icon"><Activity size={21}/></div><b>Add a patient first</b><p>Medical records are attached to a patient in your private workspace.</p><Link className="text-link" to="/patients">Open patient directory</Link></div>}
