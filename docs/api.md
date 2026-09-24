@@ -15,7 +15,7 @@ Returns training metadata and measured holdout metrics after training. Returns 4
 Predicts from the Cleveland-style features below. Example request:
 
 ```json
-{"age":52,"sex":1,"cp":0,"trestbps":125,"chol":212,"fbs":0,"restecg":1,"thalach":168,"exang":0,"oldpeak":1.0,"slope":2,"ca":0,"thal":2}
+{"age":52,"sex":1,"cp":1,"trestbps":125,"chol":212,"fbs":0,"restecg":1,"thalach":168,"exang":0,"oldpeak":1.0,"slope":3,"ca":0,"thal":3}
 ```
 
 Returns `success`, integer `prediction` (0/1), `risk_level` (`Low`/`High`), model `probability` (positive class), and a cautious message. Missing, non-numeric, or out-of-range values return 400. A model that has not been trained returns 503. Server failures return a generic message and never expose a traceback.
