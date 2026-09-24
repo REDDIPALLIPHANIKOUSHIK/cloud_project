@@ -76,7 +76,7 @@ See [API reference](docs/api.md). Implemented backend routes: `GET /api/health`,
 
 ## Deployment
 
-Backend: Render blueprint at root `render.yaml`. Frontend: Vercel project root `frontend`, build `npm run build`, output `dist`; or Firebase Hosting using the provided rewrite. See [step-by-step deployment](docs/deployment.md). Render build trains the model; configure `CORS_ORIGINS` and frontend Firebase/API variables in hosting settings. Free plan availability and limits depend on the provider's current terms.
+Deploy both services together on Vercel using the root `vercel.json` and Services preset, or deploy the backend with the Render blueprint at root `render.yaml` and frontend with Vercel root `frontend`. Firebase Hosting is also configured. See [step-by-step deployment](docs/deployment.md). Deployment builds the model; configure Firebase Web App variables and backend CORS when hosting the two apps separately. Free plan availability and limits depend on provider terms.
 
 ## Tests and evaluation
 
