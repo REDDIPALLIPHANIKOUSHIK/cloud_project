@@ -1,0 +1,24 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() { return request.auth != null; }
+    function ownsPatient(uid, patientId) {
+      return signedIn()
+        && request.auth.uid == uid
+        && firestore.exists(/databases/(default)/documents/patients/$(patientId))
+        && firestore.get(/databases/(default)/documents/patients/$(patientId)).data.ownerId == request.auth.uid;
+    }
+
+    match /patient-files/{uid}/{patientId}/{fileName} {
+      allow read, delete: if ownsPatient(uid, patientId);
+      allow create: if ownsPatient(uid, patientId)
+        && request.resource.size > 0
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType.matches('application/pdf|image/(jpeg|png|webp)');
+      allow update: if false;
+    }
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
