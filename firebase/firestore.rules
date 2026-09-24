@@ -4,6 +4,11 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function ownsExisting() { return signedIn() && resource.data.ownerId == request.auth.uid; }
     function ownsNew() { return signedIn() && request.resource.data.ownerId == request.auth.uid; }
+    function ownsPatient(patientId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/patients/$(patientId))
+        && get(/databases/$(database)/documents/patients/$(patientId)).data.ownerId == request.auth.uid;
+    }
 
     match /users/{userId} {
       allow read, write: if signedIn() && request.auth.uid == userId;
@@ -17,13 +22,42 @@ service cloud.firestore {
     }
     match /assessments/{assessmentId} {
       allow create: if ownsNew() && request.resource.data.patientId is string
+        && ownsPatient(request.resource.data.patientId)
         && request.resource.data.riskLevel in ['High', 'Low']
         && request.resource.data.probability is number
         && request.resource.data.probability >= 0 && request.resource.data.probability <= 1;
       allow read, delete: if ownsExisting();
       allow update: if false;
     }
+    match /medicalRecords/{recordId} {
+      allow create: if ownsNew()
+        && request.resource.data.patientId is string
+        && ownsPatient(request.resource.data.patientId)
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.title.size() <= 120
+        && request.resource.data.recordType in [
+          'visit-note', 'lab-report', 'prescription', 'imaging',
+          'discharge-summary', 'other'
+        ]
+        && request.resource.data.summary is string
+        && request.resource.data.summary.size() <= 5000
+        && request.resource.data.filePath is string
+        && request.resource.data.fileName is string
+        && request.resource.data.contentType in [
+          '', 'application/pdf', 'image/jpeg', 'image/png', 'image/webp'
+        ]
+        && request.resource.data.fileSize is number
+        && request.resource.data.fileSize >= 0
+        && request.resource.data.fileSize <= 10485760
+        && (request.resource.data.filePath == ''
+          || request.resource.data.filePath.matches(
+            'patient-files/' + request.auth.uid + '/' + request.resource.data.patientId + '/[^/]+'
+          ));
+      allow read, delete: if ownsExisting()
+        && ownsPatient(resource.data.patientId);
+      allow update: if false;
+    }
     match /{document=**} { allow read, write: if false; }
   }
 }
-
