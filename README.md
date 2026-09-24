@@ -23,7 +23,7 @@ React 18, Vite, React Router, Firebase Web SDK and Cloud Firestore; Flask, sciki
 
 `backend/train_model.py` loads `backend/data/heart.csv` if supplied; otherwise it downloads the UCI Cleveland Heart Disease data (processed Cleveland file) from the URL in the script. It splits stratified train/test partitions with random seed 42, imputes missing values, scales numeric features, one-hot encodes categorical features, and fits class-weighted logistic regression. The preprocessing and estimator are saved together as `backend/model/heart_disease_pipeline.joblib`. Accuracy, precision, recall, F1, ROC-AUC, confusion matrix, dataset size, and training date are measured and written to `backend/model/metadata.json` when training is run.
 
-Measured once on the fixed 20% stratified holdout (92 rows): accuracy **86.9%**, precision **81.3%**, recall **92.9%**, F1 **86.7%**, ROC-AUC **96.6%**; confusion matrix `[[27, 6], [2, 26]]`. These are educational results from a small public dataset and one split; they do not establish clinical performance.
+Measured once on the fixed 20% stratified holdout (61 rows): accuracy **86.9%**, precision **81.3%**, recall **92.9%**, F1 **86.7%**, ROC-AUC **96.6%**; confusion matrix `[[27, 6], [2, 26]]`. These are educational results from a small public dataset and one split; they do not establish clinical performance.
 
 Feature encodings match the original Cleveland dataset columns: `age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal`; categories retain dataset codes (including chest pain 1–4, slope 1–3, and thal 3/6/7) and are one-hot encoded by the pipeline. Dataset encodings are educational and not validated clinical definitions.
 
@@ -42,7 +42,7 @@ Create a Spark-plan Firebase project, enable Authentication → Email/Password, 
 
 ## Run locally
 
-Backend (Python 3.10+):
+Backend (Python 3.10–3.12, matching the deployment runtime):
 
 ```bash
 cd backend
