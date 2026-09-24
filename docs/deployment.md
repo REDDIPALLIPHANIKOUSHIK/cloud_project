@@ -13,7 +13,11 @@ Use the repository's root `render.yaml` blueprint (or create a Python web servic
 
 ## Frontend on Vercel or Firebase Hosting
 
-Set the project root to `frontend`, build command `npm run build`, output directory `dist`. Configure `VITE_API_BASE_URL` to the backend origin and all Firebase Web App variables. Vite bakes these public web-app configuration values into the browser build; Firestore security is enforced by rules, not by hiding the Firebase config. For Firebase Hosting, put the same values in `frontend/.env`, then from `firebase/` run `npm --prefix ../frontend install`, `npm --prefix ../frontend run build`, and `firebase deploy --only hosting`. The included rewrite supports React Router.
+### Vercel Services
+
+The repository root `vercel.json` defines a Vite frontend service and Flask backend service. In the Vercel import screen, leave the project root at the repository root, choose the **Services** preset, and refresh after the config is on `main`. Vercel routes `/api/*` to Flask and other requests to the frontend; each app keeps its own build settings. Add the `VITE_FIREBASE_*` variables to the Vercel project. `VITE_API_BASE_URL` can stay unset because the frontend uses the same Vercel origin in production and `http://localhost:5000` in local development. Services are currently a Vercel beta, so confirm the feature is available to your account.
+
+Vite bakes Firebase Web App configuration into the browser build; Firestore security is enforced by rules, not by hiding these values. For Firebase Hosting instead, put the variables in `frontend/.env`, then from `firebase/` run `npm --prefix ../frontend install`, `npm --prefix ../frontend run build`, and `firebase deploy --only hosting`. The Hosting rewrite supports React Router.
 
 ## Production checks
 
