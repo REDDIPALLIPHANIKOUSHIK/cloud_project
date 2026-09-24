@@ -32,7 +32,7 @@ function formatDate(value) {
 }
 function csvCell(value) {
   let text = String(value ?? '');
-  if (/^\\s*[=+\\-@]/.test(text)) text = "'" + text;
+  if (/^\s*[=+\-@]/.test(text)) text = "'" + text;
   return '"' + text.replace(/"/g, '""') + '"';
 }
 function formatSize(bytes) {
@@ -136,7 +136,7 @@ export default function MedicalRecords({ user, patients, notify }) {
         record.fileName,
       ]),
     ];
-    const csv = '\\uFEFF' + rows.map(row => row.map(csvCell).join(',')).join('\\r\\n');
+    const csv = '\uFEFF' + rows.map(row => row.map(csvCell).join(',')).join('\r\n');
     const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
     const anchor = document.createElement('a');
     anchor.href = url;
