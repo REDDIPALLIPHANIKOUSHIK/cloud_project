@@ -30,6 +30,11 @@ function formatDate(value) {
   const date = value && typeof value.toDate === 'function' ? value.toDate() : new Date(value || 0);
   return Number.isNaN(date.getTime()) ? 'Just now' : new Intl.DateTimeFormat(undefined, { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
 }
+function csvCell(value) {
+  let text = String(value ?? '');
+  if (/^\\s*[=+\\-@]/.test(text)) text = "'" + text;
+  return '"' + text.replace(/"/g, '""') + '"';
+}
 function formatSize(bytes) {
   return bytes < 1024 * 1024 ? Math.max(1, Math.round(bytes / 1024)) + ' KB' : (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
@@ -116,6 +121,30 @@ export default function MedicalRecords({ user, patients, notify }) {
     }
   }
 
+  function exportRecords() {
+    if (!records.length) return;
+    const rows = [
+      ['Patient', 'Title', 'Type', 'Created date', 'Summary', 'Attachment'],
+      ...records.map(record => [
+        record.patientName,
+        record.title,
+        recordTypes.find(item => item[0] === record.recordType)?.[1] || 'Other',
+        (record.createdAt && typeof record.createdAt.toDate === 'function'
+          ? record.createdAt.toDate()
+          : new Date(record.createdAt || Date.now())).toISOString(),
+        record.summary,
+        record.fileName,
+      ]),
+    ];
+    const csv = '\\uFEFF' + rows.map(row => row.map(csvCell).join(',')).join('\\r\\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = 'medical-records-' + new Date().toISOString().slice(0, 10) + '.csv';
+    anchor.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
   async function downloadAttachment(record) {
     try {
       const bytes = await getBytes(ref(getStorage(), record.filePath));
@@ -158,7 +187,7 @@ export default function MedicalRecords({ user, patients, notify }) {
         <div className="assessment-submit"><span><ShieldCheck size={15}/> Owner-scoped access; files are not shared by public download URL.</span><button className="btn primary" disabled={busy}>{busy ? 'Saving record…' : <><Upload size={16}/> Save health record</>}</button></div>
       </form> : <div className="empty"><div className="empty-icon"><Activity size={21}/></div><b>Add a patient first</b><p>Medical records are attached to a patient in your private workspace.</p><Link className="text-link" to="/patients">Open patient directory</Link></div>}
     </section>
-    <section className="panel recent-panel"><div className="panel-head"><div><h3>Patient records</h3><p>{records.length} saved {records.length === 1 ? 'record' : 'records'}</p></div><span className="privacy-note"><ShieldCheck size={15}/> Private to your account</span></div>
+    <section className="panel recent-panel"><div className="panel-head"><div><h3>Patient records</h3><p>{records.length} saved {records.length === 1 ? 'record' : 'records'}</p></div><div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}><span className="privacy-note"><ShieldCheck size={15}/> Private to your account</span><button type="button" className="btn" disabled={loading || !records.length} onClick={exportRecords}><Download size={16}/> Export CSV</button></div></div>
       {loading ? <div className="empty">Loading medical records…</div> : records.length ? <div className="table-wrap"><table><thead><tr><th>PATIENT</th><th>RECORD</th><th>TYPE</th><th>DATE</th><th>ATTACHMENT</th><th>ACTIONS</th></tr></thead><tbody>{records.map(record => <tr key={record.id}><td>{record.patientName}</td><td><b>{record.title}</b>{record.summary && <span className="muted" style={{ display: 'block', maxWidth: 360 }}>{record.summary}</span>}</td><td>{recordTypes.find(item => item[0] === record.recordType)?.[1] || 'Other'}</td><td>{formatDate(record.createdAt)}</td><td>{record.fileName || '—'}</td><td>{record.filePath && <button className="icon-btn" onClick={() => downloadAttachment(record)} aria-label={'Download ' + record.fileName} title="Download attachment"><Download size={16}/></button>}<button className="icon-btn delete-btn" onClick={() => removeRecord(record)} aria-label={'Delete ' + record.title} title="Delete record"><Trash2 size={16}/></button></td></tr>)}</tbody></table></div> : <div className="empty"><div className="empty-icon"><FileText size={21}/></div><b>No medical records yet</b><p>Health records you add will appear here.</p></div>}
     </section>
   </>;
