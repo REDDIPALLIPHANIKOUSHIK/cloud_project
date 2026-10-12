@@ -26,16 +26,22 @@ def get_current_user_profile():
     }), 200
 
 
-@auth_bp.route("/sync-user", methods=["POST"])
-@token_required
+@auth_bp.route("/sync-user", methods=["POST", "OPTIONS"])
 def sync_user():
-    user = g.current_user
-    uid = user["uid"]
+    if request.method == "OPTIONS":
+        return "", 200
+
+    from backend.app.middleware.auth_middleware import get_current_user_from_token
+    import uuid
+
+    user = get_current_user_from_token()
     payload = request.get_json() or {}
 
-    role = payload.get("role", user.get("role", "patient"))
+    uid = user["uid"] if user else payload.get("uid") or f"usr_{uuid.uuid4().hex[:10]}"
+    role = payload.get("role", user.get("role", "patient") if user else "patient")
+
     # Protect against self-escalation to admin
-    if role == "admin" and user.get("role") != "admin":
+    if role == "admin" and (not user or user.get("role") != "admin"):
         return jsonify({"error": "Forbidden", "message": "Admin privileges cannot be self-assigned."}), 403
 
     existing_user = db.get("users", uid)

@@ -28,5 +28,15 @@
     "grantedBy": "uid_demo_patient",
     "grantedAt": "2026-10-12T09:14:19.294064+00:00",
     "revokedAt": "2026-10-12T09:14:19.372998+00:00"
+  },
+  "acc_3a114ac72957": {
+    "accessId": "acc_3a114ac72957",
+    "patientId": "uid_demo_patient",
+    "doctorId": "uid_demo_doctor",
+    "purpose": "Testing revocation",
+    "status": "revoked",
+    "grantedBy": "uid_demo_patient",
+    "grantedAt": "2026-10-12T09:50:38.853017+00:00",
+    "revokedAt": "2026-10-12T09:50:38.922415+00:00"
   }
 }

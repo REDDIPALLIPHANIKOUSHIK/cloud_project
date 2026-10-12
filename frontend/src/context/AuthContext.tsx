@@ -48,11 +48,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = async (email: string, targetRole: UserRole = 'patient') => {
     setLoading(true);
     try {
-      // In hybrid/demo mode, map to role token
       const token = `demo-${targetRole}`;
       setAuthToken(token);
-      await api.syncUser({ email, role: targetRole, fullName: email.split('@')[0] });
-      await refreshUser();
+      const res = await api.syncUser({ email, role: targetRole, fullName: email.split('@')[0] });
+      if (res && res.user) setUser(res.user);
+      else await refreshUser();
     } finally {
       setLoading(false);
     }
@@ -63,13 +63,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     try {
       const token = `demo-${role}`;
       setAuthToken(token);
-      await api.syncUser({
+      const res = await api.syncUser({
         email,
         fullName,
         role,
         ...extra,
       });
-      await refreshUser();
+      if (res && res.user) setUser(res.user);
+      else await refreshUser();
     } finally {
       setLoading(false);
     }
