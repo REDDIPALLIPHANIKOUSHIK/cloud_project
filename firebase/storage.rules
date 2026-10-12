@@ -1,0 +1,35 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(patientId) {
+      return isAuthenticated() && request.auth.uid == patientId;
+    }
+
+    function isValidMedicalDoc() {
+      return request.resource.size < 15 * 1024 * 1024
+        && (request.resource.contentType.matches('application/pdf')
+            || request.resource.contentType.matches('image/jpeg')
+            || request.resource.contentType.matches('image/png')
+            || request.resource.contentType.matches('image/jpg'));
+    }
+
+    // Patient Documents Path
+    match /patients/{patientId}/documents/{fileName} {
+      allow read: if isOwner(patientId) || (
+        isAuthenticated() && request.auth.token.role == 'doctor'
+      );
+      allow write: if isOwner(patientId) && isValidMedicalDoc();
+      allow delete: if isOwner(patientId) || (isAuthenticated() && request.auth.token.role == 'admin');
+    }
+
+    // Default deny all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

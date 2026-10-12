@@ -1,0 +1,148 @@
+{
+  "audit_267aa3becc2c": {
+    "eventId": "audit_267aa3becc2c",
+    "actorUid": "uid_demo_patient",
+    "action": "AI_PREDICTION_RUN",
+    "resourceType": "predictions",
+    "resourceId": "pred_eae2e6bb954d",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:18.135645+00:00",
+    "metadata": {
+      "patientId": "uid_demo_patient",
+      "condition": "No Significant Coronary Artery Disease Pattern Detected",
+      "riskCategory": "Low Risk",
+      "specialty": "General Physician / Primary Care Clinician"
+    }
+  },
+  "audit_8a90b2c46467": {
+    "eventId": "audit_8a90b2c46467",
+    "actorUid": "uid_demo_patient",
+    "action": "MEDICAL_RECORD_CREATE",
+    "resourceType": "medical_records",
+    "resourceId": "rec_31eee6a59677",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:18.172034+00:00",
+    "metadata": {}
+  },
+  "audit_4e2493fd07a9": {
+    "eventId": "audit_4e2493fd07a9",
+    "actorUid": "uid_demo_patient",
+    "action": "MEDICAL_RECORDS_LIST",
+    "resourceType": "medical_records",
+    "resourceId": "uid_demo_patient",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:18.187299+00:00",
+    "metadata": {}
+  },
+  "audit_99db81c78373": {
+    "eventId": "audit_99db81c78373",
+    "actorUid": "uid_demo_doctor",
+    "action": "CLINICAL_PATIENT_RECORD_INSPECT",
+    "resourceType": "patients",
+    "resourceId": "uid_demo_patient",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:18.255084+00:00",
+    "metadata": {}
+  },
+  "audit_faf70283e047": {
+    "eventId": "audit_faf70283e047",
+    "actorUid": "uid_demo_patient",
+    "action": "DOCTOR_ACCESS_REVOKED",
+    "resourceType": "doctor_access",
+    "resourceId": "acc_seed_001",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:18.272038+00:00",
+    "metadata": {
+      "doctorId": "uid_demo_doctor"
+    }
+  },
+  "audit_16c0b9f32af1": {
+    "eventId": "audit_16c0b9f32af1",
+    "actorUid": "uid_demo_admin",
+    "action": "ADMIN_STATS_VIEW",
+    "resourceType": "admin",
+    "resourceId": "system",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:18.332906+00:00",
+    "metadata": {}
+  },
+  "audit_88f203cdaae3": {
+    "eventId": "audit_88f203cdaae3",
+    "actorUid": "uid_demo_patient",
+    "action": "AI_PREDICTION_RUN",
+    "resourceType": "predictions",
+    "resourceId": "pred_0eb0eff739bd",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:51.662949+00:00",
+    "metadata": {
+      "patientId": "uid_demo_patient",
+      "condition": "No Significant Coronary Artery Disease Pattern Detected",
+      "riskCategory": "Low Risk",
+      "specialty": "General Physician / Primary Care Clinician"
+    }
+  },
+  "audit_6c4860c3f4ac": {
+    "eventId": "audit_6c4860c3f4ac",
+    "actorUid": "uid_demo_patient",
+    "action": "MEDICAL_RECORD_CREATE",
+    "resourceType": "medical_records",
+    "resourceId": "rec_2234b7b91118",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:51.683054+00:00",
+    "metadata": {}
+  },
+  "audit_fe82bdbe40b1": {
+    "eventId": "audit_fe82bdbe40b1",
+    "actorUid": "uid_demo_patient",
+    "action": "MEDICAL_RECORDS_LIST",
+    "resourceType": "medical_records",
+    "resourceId": "uid_demo_patient",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:51.725005+00:00",
+    "metadata": {}
+  },
+  "audit_41b497b5485f": {
+    "eventId": "audit_41b497b5485f",
+    "actorUid": "uid_demo_patient",
+    "action": "DOCTOR_ACCESS_GRANTED",
+    "resourceType": "doctor_access",
+    "resourceId": "acc_37dc408a0d08",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:51.770971+00:00",
+    "metadata": {
+      "doctorId": "uid_demo_doctor"
+    }
+  },
+  "audit_b888eb27ebca": {
+    "eventId": "audit_b888eb27ebca",
+    "actorUid": "uid_demo_doctor",
+    "action": "CLINICAL_PATIENT_RECORD_INSPECT",
+    "resourceType": "patients",
+    "resourceId": "uid_demo_patient",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:51.825181+00:00",
+    "metadata": {}
+  },
+  "audit_e3871df3b94f": {
+    "eventId": "audit_e3871df3b94f",
+    "actorUid": "uid_demo_patient",
+    "action": "DOCTOR_ACCESS_REVOKED",
+    "resourceType": "doctor_access",
+    "resourceId": "acc_37dc408a0d08",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:51.847825+00:00",
+    "metadata": {
+      "doctorId": "uid_demo_doctor"
+    }
+  },
+  "audit_e0ed733b153d": {
+    "eventId": "audit_e0ed733b153d",
+    "actorUid": "uid_demo_admin",
+    "action": "ADMIN_STATS_VIEW",
+    "resourceType": "admin",
+    "resourceId": "system",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T08:50:51.911829+00:00",
+    "metadata": {}
+  }
+}

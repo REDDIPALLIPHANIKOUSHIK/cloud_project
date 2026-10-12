@@ -1,0 +1,26 @@
+{
+  "uid_demo_doctor": {
+    "uid": "uid_demo_doctor",
+    "email": "doctor@cloudproject.demo",
+    "fullName": "Dr. Sarah Chen, MD",
+    "role": "doctor",
+    "accountStatus": "active",
+    "createdAt": "2026-01-15T09:00:00Z"
+  },
+  "uid_demo_patient": {
+    "uid": "uid_demo_patient",
+    "email": "patient@cloudproject.demo",
+    "fullName": "Alex Mercer",
+    "role": "patient",
+    "accountStatus": "active",
+    "createdAt": "2026-02-01T10:00:00Z"
+  },
+  "uid_demo_admin": {
+    "uid": "uid_demo_admin",
+    "email": "admin@cloudproject.demo",
+    "fullName": "System Administrator",
+    "role": "admin",
+    "accountStatus": "active",
+    "createdAt": "2026-01-01T00:00:00Z"
+  }
+}

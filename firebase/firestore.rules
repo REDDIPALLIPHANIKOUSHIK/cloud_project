@@ -1,0 +1,104 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'admin' ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin'
+      );
+    }
+
+    function isDoctor() {
+      return isAuthenticated() && (
+        request.auth.token.role == 'doctor' ||
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'doctor'
+      );
+    }
+
+    function hasDoctorAccess(patientId) {
+      return isDoctor() &&
+        exists(/databases/$(database)/documents/doctor_access/$(request.auth.uid + '_' + patientId)) &&
+        get(/databases/$(database)/documents/doctor_access/$(request.auth.uid + '_' + patientId)).data.status == 'active';
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      // Allow users to update non-privileged fields, but forbid self-escalation to admin
+      allow update: if (isOwner(userId) && (!request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'accountStatus']))) || isAdmin();
+      allow create: if isAuthenticated() && request.resource.data.role == 'patient';
+      allow delete: if isAdmin();
+    }
+
+    // Patients Collection
+    match /patients/{patientId} {
+      allow read: if isOwner(patientId) || hasDoctorAccess(patientId) || isAdmin();
+      allow write: if isOwner(patientId) || isAdmin();
+    }
+
+    // Doctors Collection
+    match /doctors/{doctorId} {
+      allow read: if isAuthenticated();
+      allow update: if isOwner(doctorId) || isAdmin();
+      allow create: if isOwner(doctorId) || isAdmin();
+    }
+
+    // Medical Records Collection
+    match /medical_records/{recordId} {
+      allow read: if isOwner(resource.data.patientId) || hasDoctorAccess(resource.data.patientId) || isAdmin();
+      allow create: if isAuthenticated() && (isOwner(request.resource.data.patientId) || isDoctor());
+      allow update, delete: if isOwner(resource.data.patientId) || isAdmin();
+    }
+
+    // Lab Reports (Document Metadata)
+    match /lab_reports/{reportId} {
+      allow read: if isOwner(resource.data.patientId) || hasDoctorAccess(resource.data.patientId) || isAdmin();
+      allow create: if isAuthenticated() && isOwner(request.resource.data.patientId);
+      allow delete: if isOwner(resource.data.patientId) || isAdmin();
+    }
+
+    // Predictions Collection
+    match /predictions/{predictionId} {
+      allow read: if isOwner(resource.data.patientId) || hasDoctorAccess(resource.data.patientId) || isAdmin();
+      allow create: if isAuthenticated() && (isOwner(request.resource.data.patientId) || hasDoctorAccess(request.resource.data.patientId));
+      allow delete: if isAdmin();
+    }
+
+    // Doctor Access Grants
+    match /doctor_access/{accessId} {
+      allow read: if isOwner(resource.data.patientId) || isOwner(resource.data.doctorId) || isAdmin();
+      allow create: if isAuthenticated() && isOwner(request.resource.data.patientId);
+      allow update, delete: if isAuthenticated() && isOwner(resource.data.patientId);
+    }
+
+    // Clinical Notes
+    match /clinical_notes/{noteId} {
+      allow read: if isOwner(resource.data.patientId) || isOwner(resource.data.doctorId) || isAdmin();
+      allow create: if isDoctor() && hasDoctorAccess(request.resource.data.patientId);
+      allow update: if isOwner(resource.data.doctorId);
+      allow delete: if isAdmin();
+    }
+
+    // Audit Logs (Immutable)
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAuthenticated();
+      allow update, delete: if false; // Append-only audit trail
+    }
+  }
+}

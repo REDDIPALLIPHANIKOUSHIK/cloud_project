@@ -1,0 +1,14 @@
+{
+  "uid_demo_doctor": {
+    "doctorId": "uid_demo_doctor",
+    "userId": "uid_demo_doctor",
+    "fullName": "Dr. Sarah Chen, MD",
+    "specialization": "Cardiologist",
+    "medicalLicenseNumber": "MD-CARDIO-88921",
+    "hospitalAffiliation": "Metro Cardiac Institute",
+    "verificationStatus": "verified",
+    "yearsOfExperience": 14,
+    "bio": "Consultant Cardiologist specializing in preventive cardiology and ischemic heart disease.",
+    "createdAt": "2026-01-15T09:00:00Z"
+  }
+}

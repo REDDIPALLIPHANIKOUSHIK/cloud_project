@@ -1,0 +1,170 @@
+{
+  "model_name": "RandomForest",
+  "version": "1.0.0",
+  "trained_at": "2026-10-12T08:40:24.694102+00:00",
+  "dataset": {
+    "name": "UCI Cleveland Heart Disease Dataset",
+    "source": "https://archive.ics.uci.edu/ml/machine-learning-databases/heart-disease/processed.cleveland.data",
+    "total_samples": 303,
+    "features_count": 13,
+    "target_classes": {
+      "0": "No Significant Coronary Disease (< 50% narrowing)",
+      "1": "Presence of Coronary Disease (>= 50% narrowing)"
+    }
+  },
+  "features": [
+    {
+      "name": "age",
+      "description": "Age of patient in years (29 - 77)",
+      "type": "numeric",
+      "sample_min": 29.0,
+      "sample_max": 77.0,
+      "sample_median": 56.0
+    },
+    {
+      "name": "sex",
+      "description": "Biological sex (1 = male, 0 = female)",
+      "type": "categorical",
+      "sample_min": 0.0,
+      "sample_max": 1.0,
+      "sample_median": 1.0
+    },
+    {
+      "name": "cp",
+      "description": "Chest pain type (1 = typical angina, 2 = atypical angina, 3 = non-anginal pain, 4 = asymptomatic)",
+      "type": "categorical",
+      "sample_min": 1.0,
+      "sample_max": 4.0,
+      "sample_median": 3.0
+    },
+    {
+      "name": "trestbps",
+      "description": "Resting blood pressure in mm Hg on hospital admission (94 - 200)",
+      "type": "numeric",
+      "sample_min": 94.0,
+      "sample_max": 200.0,
+      "sample_median": 130.0
+    },
+    {
+      "name": "chol",
+      "description": "Serum cholesterol level in mg/dl (126 - 564)",
+      "type": "numeric",
+      "sample_min": 126.0,
+      "sample_max": 564.0,
+      "sample_median": 241.0
+    },
+    {
+      "name": "fbs",
+      "description": "Fasting blood sugar > 120 mg/dl (1 = true, 0 = false)",
+      "type": "categorical",
+      "sample_min": 0.0,
+      "sample_max": 1.0,
+      "sample_median": 0.0
+    },
+    {
+      "name": "restecg",
+      "description": "Resting electrocardiographic results (0 = normal, 1 = ST-T wave abnormality, 2 = left ventricular hypertrophy)",
+      "type": "categorical",
+      "sample_min": 0.0,
+      "sample_max": 2.0,
+      "sample_median": 1.0
+    },
+    {
+      "name": "thalach",
+      "description": "Maximum heart rate achieved during exercise (71 - 202)",
+      "type": "numeric",
+      "sample_min": 71.0,
+      "sample_max": 202.0,
+      "sample_median": 153.0
+    },
+    {
+      "name": "exang",
+      "description": "Exercise induced angina (1 = yes, 0 = no)",
+      "type": "categorical",
+      "sample_min": 0.0,
+      "sample_max": 1.0,
+      "sample_median": 0.0
+    },
+    {
+      "name": "oldpeak",
+      "description": "ST depression induced by exercise relative to rest (0.0 - 6.2)",
+      "type": "numeric",
+      "sample_min": 0.0,
+      "sample_max": 6.2,
+      "sample_median": 0.8
+    },
+    {
+      "name": "slope",
+      "description": "Slope of the peak exercise ST segment (1 = upsloping, 2 = flat, 3 = downsloping)",
+      "type": "categorical",
+      "sample_min": 1.0,
+      "sample_max": 3.0,
+      "sample_median": 2.0
+    },
+    {
+      "name": "ca",
+      "description": "Number of major vessels (0-3) colored by fluoroscopy",
+      "type": "categorical",
+      "sample_min": 0.0,
+      "sample_max": 3.0,
+      "sample_median": 0.0
+    },
+    {
+      "name": "thal",
+      "description": "Thallium stress test result (3 = normal, 6 = fixed defect, 7 = reversible defect)",
+      "type": "categorical",
+      "sample_min": 3.0,
+      "sample_max": 7.0,
+      "sample_median": 3.0
+    }
+  ],
+  "training_methodology": {
+    "train_test_split": "80/20 Stratified",
+    "cross_validation": "5-Fold Stratified K-Fold",
+    "imputation": "SimpleImputer (strategy='median')",
+    "scaling": "StandardScaler"
+  },
+  "metrics": {
+    "accuracy": 0.9016393442622951,
+    "precision": 0.8928571428571429,
+    "recall": 0.8928571428571429,
+    "f1_score": 0.8928571428571429,
+    "roc_auc": 0.9610389610389611,
+    "cv_f1_mean": 0.8007268029055966,
+    "cv_f1_std": 0.026072437744550182,
+    "confusion_matrix": [
+      [
+        30,
+        3
+      ],
+      [
+        3,
+        25
+      ]
+    ]
+  },
+  "all_model_evaluations": {
+    "LogisticRegression": {
+      "test_accuracy": 0.8688524590163934,
+      "test_precision": 0.8125,
+      "test_recall": 0.9285714285714286,
+      "test_f1": 0.8666666666666667,
+      "test_roc_auc": 0.9545454545454546,
+      "cv_f1_mean": 0.7992837874112639
+    },
+    "RandomForest": {
+      "test_accuracy": 0.9016393442622951,
+      "test_precision": 0.8928571428571429,
+      "test_recall": 0.8928571428571429,
+      "test_f1": 0.8928571428571429,
+      "test_roc_auc": 0.9610389610389611,
+      "cv_f1_mean": 0.8007268029055966
+    }
+  },
+  "clinical_limitations": [
+    "Model is validated exclusively for adult cardiovascular risk categorization on compatible structured clinical parameters.",
+    "Cannot diagnose other medical conditions such as cancer, diabetes, neurology, or orthopedics.",
+    "Probability outputs reflect mathematical model calibration on the benchmark sample and are not standalone clinical diagnoses.",
+    "Must be interpreted exclusively by or in consultation with licensed healthcare professionals."
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "uid_demo_patient": {
+    "patientId": "uid_demo_patient",
+    "userId": "uid_demo_patient",
+    "fullName": "Alex Mercer",
+    "dateOfBirth": "1978-04-12",
+    "gender": "Male",
+    "bloodGroup": "O+",
+    "phone": "+1-555-0199",
+    "createdAt": "2026-02-01T10:00:00Z"
+  }
+}
