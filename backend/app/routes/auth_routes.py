@@ -50,8 +50,8 @@ def sync_user():
     if not existing_user:
         user_doc = {
             "uid": uid,
-            "email": payload.get("email", user.get("email")),
-            "fullName": payload.get("fullName", user.get("fullName", "User")),
+            "email": payload.get("email") or (user.get("email") if user else ""),
+            "fullName": payload.get("fullName") or (user.get("fullName") if user else "User"),
             "role": role,
             "accountStatus": "active",
             "createdAt": now_iso,
@@ -82,7 +82,7 @@ def sync_user():
             "fullName": user_doc.get("fullName"),
             "specialization": payload.get("specialization", "General Medicine"),
             "medicalLicenseNumber": payload.get("medicalLicenseNumber", "LIC-" + uid[:6].upper()),
-            "verificationStatus": "verified" if user.get("email", "").endswith("@cloudproject.demo") else "unverified",
+            "verificationStatus": "verified" if ((user and user.get("email", "")) or payload.get("email", "")).endswith("@cloudproject.demo") else "unverified",
             "hospitalAffiliation": payload.get("hospitalAffiliation", "City General Hospital"),
             "createdAt": now_iso
         })

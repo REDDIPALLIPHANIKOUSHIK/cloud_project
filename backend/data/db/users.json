@@ -22,5 +22,14 @@
     "role": "admin",
     "accountStatus": "active",
     "createdAt": "2026-01-01T00:00:00Z"
+  },
+  "usr_00f25cc78d": {
+    "uid": "usr_00f25cc78d",
+    "email": "bob@gmail.com",
+    "fullName": "bob",
+    "role": "patient",
+    "accountStatus": "active",
+    "createdAt": "2026-10-12T09:53:38.852891+00:00",
+    "updatedAt": "2026-10-12T09:53:38.852891+00:00"
   }
 }

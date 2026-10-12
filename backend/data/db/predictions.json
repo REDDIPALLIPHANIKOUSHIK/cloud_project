@@ -186,5 +186,52 @@
     "createdAt": "2026-10-12T09:50:38.659007+00:00",
     "requestedBy": "uid_demo_patient",
     "requesterRole": "patient"
+  },
+  "pred_3cbb3339ff20": {
+    "predictionId": "pred_3cbb3339ff20",
+    "patientId": "usr_00f25cc78d",
+    "modelName": "RandomForest",
+    "modelVersion": "1.0.0",
+    "inputFeatureSummary": {
+      "age": 55.0,
+      "sex": 1.0,
+      "cp": 2.0,
+      "trestbps": 130.0,
+      "chol": 220.0,
+      "fbs": 0.0,
+      "restecg": 0.0,
+      "thalach": 145.0,
+      "exang": 0.0,
+      "oldpeak": 0.8,
+      "slope": 2.0,
+      "ca": 0.0,
+      "thal": 3.0
+    },
+    "predictedCondition": "No Significant Coronary Artery Disease Pattern Detected",
+    "hasDiseaseRisk": false,
+    "riskCategory": "Low Risk",
+    "probability": 0.1804,
+    "specialistRecommendation": {
+      "specialty": "General Physician / Primary Care Clinician",
+      "reason": "Model screening indicates low immediate cardiovascular risk. A primary care physician is recommended for routine wellness checkups, lifestyle counseling, and holistic health monitoring.",
+      "basedOn": [
+        "low_risk_classification",
+        "routine_clinical_evaluation"
+      ],
+      "urgency": "routine",
+      "disclaimer": "AI-generated results are intended for educational and clinical decision-support purposes only. They are not a medical diagnosis and must not replace consultation with a qualified healthcare professional."
+    },
+    "emergencyAlert": {
+      "is_emergency": false,
+      "urgent_warning": null,
+      "action_required": null,
+      "emergency_contact": "112",
+      "detected_flags": []
+    },
+    "warnings": [],
+    "disclaimer": "AI-generated results are intended for educational and clinical decision-support purposes only. They are not a medical diagnosis and must not replace consultation with a qualified healthcare professional. Seek emergency medical care for severe or rapidly worsening symptoms.",
+    "createdAt": "2026-10-12T09:54:06.309636+00:00",
+    "requestedBy": "usr_00f25cc78d",
+    "requesterRole": "patient"
   }
 }

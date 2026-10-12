@@ -302,5 +302,30 @@
     "outcome": "SUCCESS",
     "timestamp": "2026-10-12T09:50:39.017579+00:00",
     "metadata": {}
+  },
+  "audit_854df9778402": {
+    "eventId": "audit_854df9778402",
+    "actorUid": "usr_00f25cc78d",
+    "action": "USER_LOGIN_SYNC",
+    "resourceType": "users",
+    "resourceId": "usr_00f25cc78d",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T09:53:38.859214+00:00",
+    "metadata": {}
+  },
+  "audit_e232d43636df": {
+    "eventId": "audit_e232d43636df",
+    "actorUid": "usr_00f25cc78d",
+    "action": "AI_PREDICTION_RUN",
+    "resourceType": "predictions",
+    "resourceId": "pred_3cbb3339ff20",
+    "outcome": "SUCCESS",
+    "timestamp": "2026-10-12T09:54:06.313516+00:00",
+    "metadata": {
+      "patientId": "usr_00f25cc78d",
+      "condition": "No Significant Coronary Artery Disease Pattern Detected",
+      "riskCategory": "Low Risk",
+      "specialty": "General Physician / Primary Care Clinician"
+    }
   }
 }
