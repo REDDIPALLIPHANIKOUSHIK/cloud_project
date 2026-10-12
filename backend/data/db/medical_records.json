@@ -93,5 +93,35 @@
     "notes": "Patient follow-up check.",
     "createdAt": "2026-10-12T08:50:51.681848+00:00",
     "updatedAt": "2026-10-12T08:50:51.681848+00:00"
+  },
+  "rec_cae420103d20": {
+    "recordId": "rec_cae420103d20",
+    "patientId": "uid_demo_patient",
+    "createdBy": "uid_demo_patient",
+    "creatorRole": "patient",
+    "symptoms": [
+      "Dyspnea on exertion"
+    ],
+    "medicalHistory": [],
+    "familyHistory": [],
+    "allergies": [
+      "Sulfa"
+    ],
+    "medications": [
+      "Metoprolol 25mg"
+    ],
+    "vitalSigns": {
+      "bloodPressureSystolic": 135.0,
+      "bloodPressureDiastolic": 85.0,
+      "heartRate": 68.0,
+      "temperature": null,
+      "respiratoryRate": null,
+      "oxygenSaturation": null,
+      "weightKg": null,
+      "heightCm": null
+    },
+    "notes": "Patient follow-up check.",
+    "createdAt": "2026-10-12T09:14:19.209940+00:00",
+    "updatedAt": "2026-10-12T09:14:19.209940+00:00"
   }
 }
