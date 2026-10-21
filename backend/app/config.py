@@ -33,8 +33,15 @@ class Config:
     # Storage uploads
     MAX_CONTENT_LENGTH = 15 * 1024 * 1024  # 15 MB
     ALLOWED_EXTENSIONS = {"pdf", "jpg", "jpeg", "png"}
-    LOCAL_UPLOADS_DIR = os.path.join(BASE_DIR, "data", "uploads")
-    LOCAL_DB_DIR = os.path.join(BASE_DIR, "data", "db")
+    IS_SERVERLESS = bool(os.getenv("VERCEL") or os.getenv("AWS_LAMBDA_FUNCTION_NAME"))
+    LOCAL_UPLOADS_DIR = os.getenv(
+        "LOCAL_UPLOADS_DIR",
+        "/tmp/data/uploads" if IS_SERVERLESS else os.path.join(BASE_DIR, "data", "uploads")
+    )
+    LOCAL_DB_DIR = os.getenv(
+        "LOCAL_DB_DIR",
+        "/tmp/data/db" if IS_SERVERLESS else os.path.join(BASE_DIR, "data", "db")
+    )
 
 
 config = Config()

@@ -27,6 +27,17 @@ class LocalStorageEngine:
         self.storage_dir = storage_dir
         os.makedirs(storage_dir, exist_ok=True)
         self._lock = threading.RLock()
+        seed_dir = os.path.join(config.BASE_DIR, "data", "db")
+        if os.path.abspath(storage_dir) != os.path.abspath(seed_dir) and os.path.exists(seed_dir):
+            try:
+                import shutil
+                for filename in os.listdir(seed_dir):
+                    if filename.endswith(".json"):
+                        target_file = os.path.join(storage_dir, filename)
+                        if not os.path.exists(target_file):
+                            shutil.copy2(os.path.join(seed_dir, filename), target_file)
+            except Exception:
+                pass
 
     def _get_collection_path(self, collection_name: str) -> str:
         return os.path.join(self.storage_dir, f"{collection_name}.json")
