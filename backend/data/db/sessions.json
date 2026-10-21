@@ -34,5 +34,11 @@
     "uid": "usr_f6a0ff77f835",
     "role": "patient",
     "createdAt": "2026-10-21T06:39:39.554824+00:00"
+  },
+  "sess_0cad4118d08ef2216b98133e4d55cb867b9eb3a0539afe6f1921c078c7ca6e70": {
+    "token": "sess_0cad4118d08ef2216b98133e4d55cb867b9eb3a0539afe6f1921c078c7ca6e70",
+    "uid": "usr_f7ed1490f016",
+    "role": "patient",
+    "createdAt": "2026-10-21T06:51:52.990002+00:00"
   }
 }

@@ -53,6 +53,12 @@ async function request<T>(endpoint: string, options: RequestInit = {}): Promise<
     return await response.json();
   }
 
+  if (response.status === 405) {
+    throw new Error(
+      'Backend connection error (405 Method Not Allowed): The API request reached a static host instead of the Flask API. If running locally, please start the backend with "python backend/run.py" on port 5000. If deployed on Vercel, set VITE_API_BASE_URL to your deployed Python backend URL.'
+    );
+  }
+
   // Parse server error response
   let errorMsg = `Server error (${response.status})`;
   try {

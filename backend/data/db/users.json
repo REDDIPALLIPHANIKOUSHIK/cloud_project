@@ -47,5 +47,15 @@
     "accountStatus": "active",
     "createdAt": "2026-10-21T06:39:39.456050+00:00",
     "updatedAt": "2026-10-21T06:39:39.456050+00:00"
+  },
+  "usr_f7ed1490f016": {
+    "uid": "usr_f7ed1490f016",
+    "email": "aman@gmail.com",
+    "fullName": "aman",
+    "role": "patient",
+    "passwordHash": "68ac94d62170c52da7aae1142cebe191:d31cc601315a850d12da03a4b5a7e5ca0be48ea420cd9e05919b452f97ade5eb",
+    "accountStatus": "active",
+    "createdAt": "2026-10-21T06:51:52.948259+00:00",
+    "updatedAt": "2026-10-21T06:51:52.948259+00:00"
   }
 }
