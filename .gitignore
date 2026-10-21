@@ -27,6 +27,8 @@ dist-ssr/
 *.key
 backend/data/uploads/*
 !backend/data/uploads/.gitkeep
+backend/data/storage/*
+!backend/data/storage/.gitkeep
 
 # IDE & OS
 .vscode/

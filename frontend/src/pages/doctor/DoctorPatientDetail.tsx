@@ -307,9 +307,19 @@ export const DoctorPatientDetail: React.FC = () => {
                     <span className="font-bold text-slate-800 block truncate">{rep.fileName}</span>
                     <span className="text-[11px] text-slate-400">{rep.description} • {new Date(rep.uploadedAt).toLocaleDateString()}</span>
                   </div>
-                  <span className="text-[10px] uppercase font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded">
-                    {rep.fileName.split('.').pop()}
-                  </span>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => api.downloadReportFile(rep.reportId, rep.fileName)}
+                      className="px-2 py-1 bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 rounded text-[11px] font-semibold flex items-center gap-1 transition-colors"
+                      title="Download document securely"
+                    >
+                      <Download className="w-3.5 h-3.5 text-clinical-600" />
+                      Download
+                    </button>
+                    <span className="text-[10px] uppercase font-bold bg-slate-200 text-slate-700 px-2 py-0.5 rounded">
+                      {rep.fileName.split('.').pop()}
+                    </span>
+                  </div>
                 </div>
               ))}
             </div>

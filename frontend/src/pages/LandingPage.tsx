@@ -17,7 +17,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 export const LandingPage: React.FC = () => {
-  const { user, role, loginAsDemo } = useAuth();
+  const { user, role } = useAuth();
 
   const getDashboardPath = () => {
     if (role === 'doctor') return '/doctor/dashboard';
@@ -79,33 +79,6 @@ export const LandingPage: React.FC = () => {
                   </Link>
                 </>
               )}
-            </div>
-
-            {/* Instant Demo Role Launcher */}
-            <div className="mt-8 pt-6 border-t border-slate-200">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-2.5">
-                Instant One-Click Demo Evaluation (No Setup Required):
-              </span>
-              <div className="inline-flex flex-wrap items-center justify-center gap-2">
-                <button
-                  onClick={() => loginAsDemo('patient')}
-                  className="px-3.5 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-xs font-bold transition-colors"
-                >
-                  Launch as Patient
-                </button>
-                <button
-                  onClick={() => loginAsDemo('doctor')}
-                  className="px-3.5 py-1.5 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-bold transition-colors"
-                >
-                  Launch as Doctor
-                </button>
-                <button
-                  onClick={() => loginAsDemo('admin')}
-                  className="px-3.5 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200 text-xs font-bold transition-colors"
-                >
-                  Launch as Admin
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -253,12 +226,12 @@ export const LandingPage: React.FC = () => {
               <li>• Grant & revoke doctor access in 1 click</li>
               <li>• Download full clinical health summaries</li>
             </ul>
-            <button
-              onClick={() => loginAsDemo('patient')}
-              className="w-full py-2 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition-colors"
+            <Link
+              to="/register"
+              className="w-full inline-flex items-center justify-center py-2.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs transition-colors"
             >
-              Test Patient Experience
-            </button>
+              Register as Patient
+            </Link>
           </div>
 
           <div className="clinical-card p-6">
@@ -273,12 +246,12 @@ export const LandingPage: React.FC = () => {
               <li>• Add dated clinical notes & prescriptions</li>
               <li>• Professional verification status management</li>
             </ul>
-            <button
-              onClick={() => loginAsDemo('doctor')}
-              className="w-full py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-colors"
+            <Link
+              to="/register"
+              className="w-full inline-flex items-center justify-center py-2.5 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-colors"
             >
-              Test Doctor Experience
-            </button>
+              Register as Clinician
+            </Link>
           </div>
 
           <div className="clinical-card p-6">
@@ -293,12 +266,12 @@ export const LandingPage: React.FC = () => {
               <li>• Real-time immutable security audit stream</li>
               <li>• Strict non-clinical privilege isolation</li>
             </ul>
-            <button
-              onClick={() => loginAsDemo('admin')}
-              className="w-full py-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-colors"
+            <Link
+              to="/login"
+              className="w-full inline-flex items-center justify-center py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-colors"
             >
-              Test Admin Experience
-            </button>
+              Sign In to Admin Console
+            </Link>
           </div>
         </div>
       </section>

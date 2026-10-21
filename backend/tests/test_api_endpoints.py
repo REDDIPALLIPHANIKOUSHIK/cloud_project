@@ -1,5 +1,5 @@
 import pytest
-import json
+import io
 from backend.app import create_app
 from backend.app.services.db_service import db
 
@@ -64,9 +64,9 @@ def test_prediction_endpoint_with_valid_data(client):
 
 
 def test_prediction_endpoint_validation_failure(client):
-    # Missing required clinical fields
+    # Missing required clinical fields and invalid age
     invalid_payload = {
-        "age": 150.0,  # exceeds max human age 120
+        "age": 150.0,
         "sex": 1.0
     }
     res = client.post(
@@ -107,3 +107,70 @@ def test_medical_records_crud(client):
     assert list_res.status_code == 200
     list_data = list_res.get_json()
     assert list_data["count"] >= 1
+
+
+def test_user_registration_and_login(client):
+    import uuid
+    unique_email = f"test_pat_{uuid.uuid4().hex[:8]}@example.com"
+    reg_payload = {
+        "email": unique_email,
+        "password": "Password123!",
+        "fullName": "Jane Doe",
+        "role": "patient",
+        "bloodGroup": "A+",
+        "gender": "Female"
+    }
+    reg_res = client.post("/api/v1/auth/register", json=reg_payload)
+    assert reg_res.status_code == 201
+    reg_data = reg_res.get_json()
+    assert "token" in reg_data
+    assert reg_data["user"]["email"] == unique_email
+    token = reg_data["token"]
+
+    # Login with same credentials
+    login_res = client.post("/api/v1/auth/login", json={
+        "email": unique_email,
+        "password": "Password123!"
+    })
+    assert login_res.status_code == 200
+    login_data = login_res.get_json()
+    assert login_data["user"]["role"] == "patient"
+
+    # Verify session token access
+    me_res = client.get("/api/v1/me", headers={"Authorization": f"Bearer {token}"})
+    assert me_res.status_code == 200
+    me_data = me_res.get_json()
+    assert me_data["user"]["email"] == unique_email
+
+
+def test_document_upload_and_download(client):
+    # Upload test document via multipart
+    data = {
+        "description": "Routine ECG Scan",
+        "file": (io.BytesIO(b"%PDF-1.4 test document content"), "test_scan.pdf")
+    }
+    upload_res = client.post(
+        "/api/v1/reports/upload",
+        headers={"Authorization": "Bearer demo-patient"},
+        data=data,
+        content_type="multipart/form-data"
+    )
+    assert upload_res.status_code == 201
+    upload_data = upload_res.get_json()
+    assert upload_data["fileName"] == "test_scan.pdf"
+    report_id = upload_data["reportId"]
+
+    # Download uploaded document
+    download_res = client.get(
+        f"/api/v1/reports/{report_id}/download",
+        headers={"Authorization": "Bearer demo-patient"}
+    )
+    assert download_res.status_code == 200
+    assert download_res.data == b"%PDF-1.4 test document content"
+
+    # Delete document
+    del_res = client.delete(
+        f"/api/v1/reports/{report_id}",
+        headers={"Authorization": "Bearer demo-patient"}
+    )
+    assert del_res.status_code == 200

@@ -7,6 +7,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 class Config:
+    BASE_DIR = BASE_DIR
     ENV = os.getenv("FLASK_ENV", "development")
     DEBUG = ENV == "development"
     PORT = int(os.getenv("PORT", 5000))

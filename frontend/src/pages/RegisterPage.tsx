@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Activity, Mail, Lock, User, Stethoscope, ArrowRight, Shield } from 'lucide-react';
+import { Activity, Mail, Lock, User, Stethoscope, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { UserRole } from '../types/auth';
 
@@ -17,11 +17,13 @@ export const RegisterPage: React.FC = () => {
   const [dateOfBirth, setDateOfBirth] = useState('1992-06-15');
   const [gender, setGender] = useState('Male');
   const [bloodGroup, setBloodGroup] = useState('O+');
+  const [phone, setPhone] = useState('');
 
   // Doctor Extra Fields
   const [specialization, setSpecialization] = useState('Cardiologist');
   const [medicalLicenseNumber, setMedicalLicenseNumber] = useState('');
   const [hospitalAffiliation, setHospitalAffiliation] = useState('');
+  const [yearsOfExperience, setYearsOfExperience] = useState(5);
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -29,19 +31,46 @@ export const RegisterPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    if (!email || !fullName) {
-      setError('Please provide full name and email.');
+    if (!email || !fullName || !password) {
+      setError('Please provide full name, email, and a password (min 6 characters).');
       return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+
+    if (role === 'doctor') {
+      if (!medicalLicenseNumber.trim()) {
+        setError('Medical license number is required for clinician registration.');
+        return;
+      }
+      if (!hospitalAffiliation.trim()) {
+        setError('Hospital or clinic affiliation is required for clinician registration.');
+        return;
+      }
     }
 
     setLoading(true);
     try {
       const extra =
         role === 'patient'
-          ? { dateOfBirth, gender, bloodGroup }
-          : { specialization, medicalLicenseNumber: medicalLicenseNumber || 'LIC-DEMO-001', hospitalAffiliation: hospitalAffiliation || 'City Medical Hospital' };
+          ? { dateOfBirth, gender, bloodGroup, phone }
+          : {
+              specialization,
+              medicalLicenseNumber: medicalLicenseNumber.trim(),
+              hospitalAffiliation: hospitalAffiliation.trim(),
+              yearsOfExperience,
+            };
 
-      await register(email, fullName, role, extra);
+      await register({
+        email,
+        password,
+        fullName,
+        role,
+        ...extra,
+      });
+
       navigate(role === 'doctor' ? '/doctor/dashboard' : '/patient/dashboard');
     } catch (err: any) {
       setError(err.message || 'Registration failed.');
@@ -102,99 +131,121 @@ export const RegisterPage: React.FC = () => {
                   }`}
                 >
                   <Stethoscope className="w-4 h-4 text-blue-600" />
-                  Healthcare Professional
+                  Doctor / Clinician
                 </button>
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Full Legal Name
+                Full Name
               </label>
-              <input
-                type="text"
-                required
-                value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
-                placeholder={role === 'doctor' ? 'Dr. Elizabeth Blackwell, MD' : 'Alex Mercer'}
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-clinical-500 focus:outline-none"
-              />
+              <div className="relative">
+                <User className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <input
+                  type="text"
+                  required
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  placeholder={role === 'doctor' ? 'Dr. Elizabeth Bennett, MD' : 'John Doe'}
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-clinical-500 focus:outline-none"
+                />
+              </div>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
                 Email Address
               </label>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="user@example.com"
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-clinical-500 focus:outline-none"
-              />
+              <div className="relative">
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-clinical-500 focus:outline-none"
+                />
+              </div>
             </div>
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Password
+                Password (min 6 characters)
               </label>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Create secure password"
-                className="w-full px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-clinical-500 focus:outline-none"
-              />
+              <div className="relative">
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
+                <input
+                  type="password"
+                  required
+                  minLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="••••••••••••"
+                  className="w-full pl-9 pr-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-clinical-500 focus:outline-none"
+                />
+              </div>
             </div>
 
             {/* Role Specific Fields */}
             {role === 'patient' ? (
-              <div className="grid grid-cols-3 gap-3 pt-2 border-t border-slate-100">
+              <div className="space-y-3 pt-2 border-t border-slate-100">
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Date of Birth</label>
+                    <input
+                      type="date"
+                      value={dateOfBirth}
+                      onChange={(e) => setDateOfBirth(e.target.value)}
+                      className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Gender</label>
+                    <select
+                      value={gender}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"
+                    >
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Blood Group</label>
+                    <select
+                      value={bloodGroup}
+                      onChange={(e) => setBloodGroup(e.target.value)}
+                      className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"
+                    >
+                      <option value="O+">O+</option>
+                      <option value="O-">O-</option>
+                      <option value="A+">A+</option>
+                      <option value="A-">A-</option>
+                      <option value="B+">B+</option>
+                      <option value="B-">B-</option>
+                      <option value="AB+">AB+</option>
+                      <option value="AB-">AB-</option>
+                    </select>
+                  </div>
+                </div>
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Date of Birth</label>
+                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Phone Number</label>
                   <input
-                    type="date"
-                    value={dateOfBirth}
-                    onChange={(e) => setDateOfBirth(e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg"
+                    type="tel"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    placeholder="+91 98765 43210"
+                    className="w-full px-3 py-1.5 text-xs border border-slate-300 rounded-lg"
                   />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Gender</label>
-                  <select
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"
-                  >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Blood Group</label>
-                  <select
-                    value={bloodGroup}
-                    onChange={(e) => setBloodGroup(e.target.value)}
-                    className="w-full px-2 py-1.5 text-xs border border-slate-300 rounded-lg bg-white"
-                  >
-                    <option value="O+">O+</option>
-                    <option value="O-">O-</option>
-                    <option value="A+">A+</option>
-                    <option value="A-">A-</option>
-                    <option value="B+">B+</option>
-                    <option value="B-">B-</option>
-                    <option value="AB+">AB+</option>
-                    <option value="AB-">AB-</option>
-                  </select>
                 </div>
               </div>
             ) : (
               <div className="space-y-3 pt-2 border-t border-slate-100">
                 <div>
-                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Specialization</label>
+                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Medical Specialization</label>
                   <select
                     value={specialization}
                     onChange={(e) => setSpecialization(e.target.value)}
@@ -206,29 +257,44 @@ export const RegisterPage: React.FC = () => {
                     <option value="Neurologist">Neurologist (Brain & Nervous System)</option>
                     <option value="General Physician">General Physician / Primary Care</option>
                     <option value="Orthopedist">Orthopedist (Musculoskeletal)</option>
+                    <option value="Gastroenterologist">Gastroenterologist (Digestive Health)</option>
+                    <option value="Dermatologist">Dermatologist (Skin Health)</option>
                   </select>
                 </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">License Number</label>
+                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Medical License Number *</label>
                     <input
                       type="text"
+                      required
                       value={medicalLicenseNumber}
                       onChange={(e) => setMedicalLicenseNumber(e.target.value)}
-                      placeholder="e.g. MD-98214"
+                      placeholder="e.g. MCI-2018-8831"
                       className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Affiliated Hospital</label>
+                    <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Hospital / Clinic Affiliation *</label>
                     <input
                       type="text"
+                      required
                       value={hospitalAffiliation}
                       onChange={(e) => setHospitalAffiliation(e.target.value)}
-                      placeholder="e.g. City General Hospital"
+                      placeholder="e.g. Apollo Hospital"
                       className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg"
                     />
                   </div>
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Years of Clinical Experience</label>
+                  <input
+                    type="number"
+                    min={0}
+                    max={60}
+                    value={yearsOfExperience}
+                    onChange={(e) => setYearsOfExperience(parseInt(e.target.value) || 0)}
+                    className="w-full px-2.5 py-1.5 text-xs border border-slate-300 rounded-lg"
+                  />
                 </div>
               </div>
             )}

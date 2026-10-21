@@ -1,0 +1,38 @@
+{
+  "sess_ac22216aeac9160c3c3bddaa606b7bedc645edbaa53b9788fd644521813f86bd": {
+    "token": "sess_ac22216aeac9160c3c3bddaa606b7bedc645edbaa53b9788fd644521813f86bd",
+    "uid": "usr_45b8130cc655",
+    "role": "patient",
+    "createdAt": "2026-10-21T06:31:57.535432+00:00"
+  },
+  "sess_54e6939c0afd54c7de949aaba6d107151843766a62ce229b57f30a8330e8ab09": {
+    "token": "sess_54e6939c0afd54c7de949aaba6d107151843766a62ce229b57f30a8330e8ab09",
+    "uid": "usr_45b8130cc655",
+    "role": "patient",
+    "createdAt": "2026-10-21T06:31:57.609125+00:00"
+  },
+  "sess_8748fbe5ff318e467771c49dba8fb37977ed0905b8692e30dbef6b078550c968": {
+    "token": "sess_8748fbe5ff318e467771c49dba8fb37977ed0905b8692e30dbef6b078550c968",
+    "uid": "usr_b31a5ce41a99",
+    "role": "patient",
+    "createdAt": "2026-10-21T06:33:02.173604+00:00"
+  },
+  "sess_385d151d8c8f4da2006ec1b5709e9e50a711633c9450f11256ea015e8c3d23c8": {
+    "token": "sess_385d151d8c8f4da2006ec1b5709e9e50a711633c9450f11256ea015e8c3d23c8",
+    "uid": "usr_b31a5ce41a99",
+    "role": "patient",
+    "createdAt": "2026-10-21T06:33:02.277768+00:00"
+  },
+  "sess_05d8009fc9d0852fc138a61096ee10fa6d6731bec5abf930bc648d462200c113": {
+    "token": "sess_05d8009fc9d0852fc138a61096ee10fa6d6731bec5abf930bc648d462200c113",
+    "uid": "usr_f6a0ff77f835",
+    "role": "patient",
+    "createdAt": "2026-10-21T06:39:39.489453+00:00"
+  },
+  "sess_7d9e9828ff0ca542ef5062d753cab75ba58b23b359758b444c2adfb04056bf62": {
+    "token": "sess_7d9e9828ff0ca542ef5062d753cab75ba58b23b359758b444c2adfb04056bf62",
+    "uid": "usr_f6a0ff77f835",
+    "role": "patient",
+    "createdAt": "2026-10-21T06:39:39.554824+00:00"
+  }
+}

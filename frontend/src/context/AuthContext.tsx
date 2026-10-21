@@ -2,13 +2,28 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { UserProfile, UserRole } from '../types/auth';
 import { api, setAuthToken, removeAuthToken, getAuthToken } from '../lib/api';
 
+interface RegisterPayload {
+  email: string;
+  password: string;
+  fullName: string;
+  role: UserRole;
+  dateOfBirth?: string;
+  gender?: string;
+  bloodGroup?: string;
+  phone?: string;
+  specialization?: string;
+  medicalLicenseNumber?: string;
+  hospitalAffiliation?: string;
+  yearsOfExperience?: number;
+  bio?: string;
+}
+
 interface AuthContextType {
   user: UserProfile | null;
   role: UserRole;
   loading: boolean;
-  login: (email: string, role?: UserRole) => Promise<void>;
-  register: (email: string, fullName: string, role: UserRole, extra?: any) => Promise<void>;
-  loginAsDemo: (demoRole: UserRole) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  register: (payload: RegisterPayload) => Promise<void>;
   logout: () => void;
   refreshUser: () => Promise<void>;
 }
@@ -20,22 +35,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [loading, setLoading] = useState<boolean>(true);
 
   const refreshUser = async () => {
+    const token = getAuthToken();
+    if (!token) {
+      setUser(null);
+      setLoading(false);
+      return;
+    }
+
     try {
       const data = await api.getMe();
       if (data && data.user) {
         setUser(data.user);
+      } else {
+        setUser(null);
+        removeAuthToken();
       }
     } catch (err) {
-      console.warn('[AuthContext] Could not retrieve session, defaulting to demo patient.');
-      // Auto-fallback to demo-patient in local preview
-      const fallbackToken = getAuthToken() || 'demo-patient';
-      setAuthToken(fallbackToken);
-      try {
-        const data = await api.getMe();
-        if (data && data.user) setUser(data.user);
-      } catch (inner) {
-        setUser(null);
-      }
+      console.warn('[AuthContext] Session invalid or expired:', err);
+      setUser(null);
+      removeAuthToken();
     } finally {
       setLoading(false);
     }
@@ -45,42 +63,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     refreshUser();
   }, []);
 
-  const login = async (email: string, targetRole: UserRole = 'patient') => {
+  const login = async (email: string, password: string) => {
     setLoading(true);
     try {
-      const token = `demo-${targetRole}`;
-      setAuthToken(token);
-      const res = await api.syncUser({ email, role: targetRole, fullName: email.split('@')[0] });
-      if (res && res.user) setUser(res.user);
-      else await refreshUser();
+      const res = await api.loginUser(email, password);
+      if (res && res.token && res.user) {
+        setAuthToken(res.token);
+        setUser(res.user);
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  const register = async (email: string, fullName: string, role: UserRole, extra: any = {}) => {
+  const register = async (payload: RegisterPayload) => {
     setLoading(true);
     try {
-      const token = `demo-${role}`;
-      setAuthToken(token);
-      const res = await api.syncUser({
-        email,
-        fullName,
-        role,
-        ...extra,
-      });
-      if (res && res.user) setUser(res.user);
-      else await refreshUser();
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const loginAsDemo = async (demoRole: UserRole) => {
-    setLoading(true);
-    try {
-      setAuthToken(`demo-${demoRole}`);
-      await refreshUser();
+      const res = await api.registerUser(payload);
+      if (res && res.token && res.user) {
+        setAuthToken(res.token);
+        setUser(res.user);
+      }
     } finally {
       setLoading(false);
     }
@@ -101,7 +104,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         loading,
         login,
         register,
-        loginAsDemo,
         logout,
         refreshUser,
       }}

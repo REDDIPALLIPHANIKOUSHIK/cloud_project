@@ -1,12 +1,12 @@
 """
 Authentication & Role-Based Access Control Middleware
-Verifies Firebase ID tokens or structured mock tokens for local testing.
+Verifies live Firebase ID tokens or registered database session tokens.
 Enforces role-based permissions and explicit patient data ownership.
 """
 
 from functools import wraps
 from typing import List, Optional, Dict, Any
-from flask import request, jsonify, g
+from flask import request, jsonify, g, current_app
 import json
 
 from backend.app.config import config
@@ -23,7 +23,7 @@ except ImportError:
 def get_current_user_from_token() -> Optional[Dict[str, Any]]:
     """
     Extracts and validates the authentication token from request headers.
-    Supports real Firebase ID tokens and structured local/demo tokens.
+    Supports real Firebase ID tokens and verified database session tokens.
     """
     auth_header = request.headers.get("Authorization", "")
     if not auth_header or not auth_header.startswith("Bearer "):
@@ -33,64 +33,76 @@ def get_current_user_from_token() -> Optional[Dict[str, Any]]:
     if not token:
         return None
 
-    # 1. Attempt live Firebase ID token verification if configured
+    # 1. Attempt live Firebase ID token verification if cloud Firebase is configured
     if FIREBASE_AVAILABLE and db.is_cloud:
         try:
             decoded = firebase_auth.verify_id_token(token)
             uid = decoded.get("uid")
             email = decoded.get("email", "")
-            # Fetch user record from database to retrieve authoritative role
+            # Fetch authoritative user document from Firestore / DB
             user_doc = db.get("users", uid)
             role = user_doc.get("role", "patient") if user_doc else "patient"
             return {
                 "uid": uid,
                 "email": email,
                 "role": role,
+                "fullName": user_doc.get("fullName", "User") if user_doc else "User",
                 "accountStatus": user_doc.get("accountStatus", "active") if user_doc else "active"
             }
-        except Exception as e:
-            # Token may be local mock token
+        except Exception:
             pass
 
-    # 2. Local / Development / Demo token verification
-    # Supports "demo-patient", "demo-doctor", "demo-admin", or JSON payload
-    if token.startswith("demo-"):
-        role_part = token.replace("demo-", "")
-        if role_part in ["patient", "doctor", "admin"]:
-            uid = f"uid_demo_{role_part}"
-            user_doc = db.get("users", uid)
-            if not user_doc:
-                # Seed mock user on-the-fly
-                user_doc = {
-                    "uid": uid,
-                    "email": f"{role_part}@cloudproject.demo",
-                    "fullName": f"Demo {role_part.capitalize()}",
-                    "role": role_part,
+    # 2. Check Database Session Tokens (for standard REST API authentication)
+    session_doc = db.get("sessions", token)
+    if session_doc:
+        uid = session_doc.get("uid")
+        user_doc = db.get("users", uid)
+        if user_doc and user_doc.get("accountStatus") == "active":
+            return {
+                "uid": user_doc["uid"],
+                "email": user_doc.get("email", ""),
+                "fullName": user_doc.get("fullName", "User"),
+                "role": user_doc.get("role", "patient"),
+                "accountStatus": user_doc.get("accountStatus", "active")
+            }
+
+    # 3. Isolated Automated Testing Mode Only
+    # Synthetic tokens are strictly permitted within testing fixtures when current_app.config["TESTING"] is True
+    is_testing = False
+    try:
+        is_testing = current_app and current_app.config.get("TESTING", False)
+    except Exception:
+        is_testing = False
+
+    if is_testing:
+        if token.startswith("demo-"):
+            role_part = token.replace("demo-", "")
+            if role_part in ["patient", "doctor", "admin"]:
+                uid = f"uid_test_{role_part}"
+                user_doc = db.get("users", uid)
+                if not user_doc:
+                    user_doc = {
+                        "uid": uid,
+                        "email": f"test_{role_part}@test.local",
+                        "fullName": f"Test {role_part.capitalize()}",
+                        "role": role_part,
+                        "accountStatus": "active"
+                    }
+                    db.set("users", uid, user_doc)
+                return user_doc
+
+        try:
+            data = json.loads(token)
+            if isinstance(data, dict) and "uid" in data:
+                return {
+                    "uid": data["uid"],
+                    "email": data.get("email", f"{data['uid']}@test.local"),
+                    "fullName": data.get("fullName", "Test User"),
+                    "role": data.get("role", "patient"),
                     "accountStatus": "active"
                 }
-                db.set("users", uid, user_doc)
-            return user_doc
-
-    # Supports base64 or JSON token encoding for testing: {"uid": "...", "role": "..."}
-    try:
-        data = json.loads(token)
-        if isinstance(data, dict) and "uid" in data:
-            uid = data["uid"]
-            user_doc = db.get("users", uid)
-            role = data.get("role", user_doc.get("role", "patient") if user_doc else "patient")
-            return {
-                "uid": uid,
-                "email": data.get("email", f"{uid}@test.local"),
-                "role": role,
-                "accountStatus": "active"
-            }
-    except Exception:
-        pass
-
-    # If the token is a simple UID string
-    user_doc = db.get("users", token)
-    if user_doc:
-        return user_doc
+        except Exception:
+            pass
 
     return None
 

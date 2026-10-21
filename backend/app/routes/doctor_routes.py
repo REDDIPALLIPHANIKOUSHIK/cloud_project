@@ -267,3 +267,56 @@ def list_my_clinical_notes():
     notes = db.query("clinical_notes", [("doctorId", "==", doctor_uid)])
     notes.sort(key=lambda r: r.get("createdAt", ""), reverse=True)
     return jsonify({"count": len(notes), "notes": notes}), 200
+
+
+@doctor_bp.route("/doctor/profile/me", methods=["GET"])
+@token_required
+@require_roles(["doctor"])
+def get_my_doctor_profile():
+    doctor_uid = g.current_user["uid"]
+    doc = db.get("doctors", doctor_uid)
+    if not doc:
+        now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        doc = {
+            "doctorId": doctor_uid,
+            "userId": doctor_uid,
+            "fullName": g.current_user.get("fullName", "Doctor"),
+            "specialization": "General Physician",
+            "verificationStatus": "unverified",
+            "hospitalAffiliation": "General Medical Center",
+            "yearsOfExperience": 5,
+            "bio": "Licensed clinical specialist.",
+            "createdAt": now_iso
+        }
+        db.set("doctors", doctor_uid, doc)
+    return jsonify(doc), 200
+
+
+@doctor_bp.route("/doctor/profile", methods=["PUT"])
+@token_required
+@require_roles(["doctor"])
+def update_my_doctor_profile():
+    doctor_uid = g.current_user["uid"]
+    raw_data = request.get_json() or {}
+    try:
+        schema = DoctorProfileUpdate(**raw_data)
+    except ValidationError as err:
+        return jsonify({"error": "Validation Error", "details": err.errors()}), 422
+
+    now_iso = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    updates = {k: v for k, v in schema.model_dump().items() if v is not None}
+    updates["updatedAt"] = now_iso
+
+    updated_doc = db.update("doctors", doctor_uid, updates)
+    if not updated_doc:
+        updates["doctorId"] = doctor_uid
+        updates["userId"] = doctor_uid
+        updates["createdAt"] = now_iso
+        updated_doc = db.set("doctors", doctor_uid, updates)
+
+    if schema.fullName:
+        db.update("users", doctor_uid, {"fullName": schema.fullName, "updatedAt": now_iso})
+
+    log_audit_event(doctor_uid, "DOCTOR_PROFILE_UPDATE", "doctors", doctor_uid, "SUCCESS")
+    return jsonify(updated_doc), 200
+

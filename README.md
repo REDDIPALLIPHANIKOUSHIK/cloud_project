@@ -3,7 +3,7 @@
 [![GitHub Repository](https://img.shields.io/badge/GitHub-Repository-blue?logo=github)](https://github.com/REDDIPALLIPHANIKOUSHIK/cloud_project)
 [![Model Benchmark](https://img.shields.io/badge/Model%20Accuracy-90.16%25-emerald)](backend/ml/model_metadata.json)
 [![ROC--AUC](https://img.shields.io/badge/ROC--AUC-0.961-teal)](backend/ml/model_metadata.json)
-[![Pytest Test Suite](https://img.shields.io/badge/Pytest-23%20Passed%20(100%25)-brightgreen)](backend/tests/)
+[![Pytest Test Suite](https://img.shields.io/badge/Pytest-25%20Passed%20(100%25)-brightgreen)](backend/tests/)
 [![Production Build](https://img.shields.io/badge/Vite%20Build-Passing-success)](frontend/)
 
 ---
@@ -232,8 +232,11 @@ python ml/train_model.py
 # Verify model evaluation assertions
 python ml/evaluate_model.py
 
-# Run the test suite (All 23 tests should pass)
+# Run the test suite (All 25 tests should pass)
 python -m pytest tests -v
+
+# (Optional) Provision an Administrator Account
+python create_admin.py --email admin@hospital.org --password SecureAdminPass123! --name "System Administrator"
 
 # Start the Flask API server
 python run.py
@@ -263,13 +266,15 @@ Execute the complete backend test suite:
 python -m pytest backend/tests -v
 ```
 
-### Verified Test Results (23 Passed, 100% Success)
+### Verified Test Results (25 Passed, 100% Success)
 - `test_health_check_endpoint`: Health status and model loaded verification.
 - `test_unauthorized_request_rejected`: Unauthenticated request rejected with 401.
 - `test_authenticated_profile_and_sync`: Session retrieval and profile sync.
 - `test_prediction_endpoint_with_valid_data`: 13-feature inference and response shape.
 - `test_prediction_endpoint_validation_failure`: Schema validation error rejection (422).
 - `test_medical_records_crud`: Creation and chronological retrieval of clinical records.
+- `test_user_registration_and_login`: Cryptographic PBKDF2 password hashing, registration, and session token verification.
+- `test_document_upload_and_download`: Multipart document upload (PDF) to private storage and secure authenticated download.
 - `test_cross_patient_access_forbidden`: Patient A cannot view Patient B's records (403).
 - `test_unauthorized_doctor_access_forbidden`: Doctor cannot access patient without active grant (403).
 - `test_revoked_doctor_access_blocks_immediately`: Revoked consent blocks doctor instantly (403).
@@ -290,19 +295,31 @@ python -m pytest backend/tests -v
 
 ---
 
-## 9. One-Click Test Account Demonstration
+## 9. End-to-End Clinical Workflow
 
-For frictionless grading and demonstration without manual registration, use the quick role switcher in the navbar or the preset buttons on the login screen:
+The system enforces authentic, role-isolated healthcare data management:
 
-1. **Demo Patient (Alex Mercer):**
-   - Click **Demo Role: Patient**
-   - Explore recorded vitals, view existing lab report metadata, launch cardiovascular predictions with pre-loaded high-risk and low-risk test samples, manage doctor consent, and download clinical summary.
-2. **Demo Doctor (Dr. Sarah Chen, MD - Cardiologist):**
-   - Click **Demo Role: Doctor**
-   - Review authorized patients with active consent, inspect clinical charts, review AI predictions and feature breakdowns, and add dated consultation notes.
-3. **Demo Administrator:**
-   - Click **Demo Role: Admin**
-   - Inspect platform analytics, Recharts risk and role distribution charts, manage user roles and doctor verification statuses, and inspect the real-time security audit log stream.
+1. **Patient Registration & Vitals Management:**
+   - Patient registers via `/register` with full name, email, secure password, date of birth, and blood group.
+   - Logs into the Patient Portal to record clinical vitals, allergies, family history, and symptoms.
+2. **Private Document Storage:**
+   - Patient uploads diagnostic reports (PDF, JPG, JPEG, PNG, up to 10 MB).
+   - Documents are saved to private storage volumes and can be securely downloaded via authenticated signed routes.
+3. **AI-Powered Disease Prediction:**
+   - Patient submits clinical parameters (blood pressure, cholesterol, ECG, thalach, etc.) to `/api/v1/predict`.
+   - The verified Random Forest model calculates genuine probability and risk tier.
+4. **Specialist Recommendation & Emergency Safety:**
+   - The recommender maps results to the appropriate specialist (e.g. Cardiologist for cardiovascular risk, Pulmonologist for respiratory complaints, Endocrinologist for elevated fasting blood glucose, or General Physician for routine low risk).
+   - Independent safety rules screen for acute red flags (crushing chest pain, dyspnea, stroke signs) and unconditionally display emergency assistance guidance (112 in India).
+5. **Patient-Governed Doctor Access Sharing:**
+   - Patient selects a verified doctor from the clinical directory and grants access with a specific clinical purpose.
+   - The authorized doctor can now view the patient's records, diagnostic documents, and prediction history.
+6. **Doctor Consultation & Notes:**
+   - The doctor reviews the patient's history and logs dated clinical consultation notes, prescriptions, and follow-up observations.
+7. **Instant Access Revocation:**
+   - The patient can revoke doctor access at any time with a single click. Revocation takes effect immediately, preventing further clinician access.
+8. **Administrator Governance:**
+   - Administrators provisioned via `create_admin.py` review system analytics, verify clinician licenses, manage account statuses, and audit the real-time immutable security event log.
 
 ---
 

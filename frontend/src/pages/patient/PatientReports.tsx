@@ -94,17 +94,8 @@ export const PatientReports: React.FC = () => {
     setSuccess(null);
 
     try {
-      // Create metadata entry in database
-      const payload = {
-        fileName: file.name,
-        fileType: file.type || 'application/pdf',
-        fileSize: file.size,
-        description: description || 'Clinical diagnostic document',
-        storagePath: `patients/documents/${file.name}`,
-      };
-
-      await api.createReportMetadata(payload);
-      setSuccess(`Document "${file.name}" uploaded and registered securely.`);
+      await api.uploadReportFile(file, description || 'Clinical diagnostic document');
+      setSuccess(`Document "${file.name}" uploaded and saved securely.`);
       setFile(null);
       setDescription('');
       await fetchReports();
@@ -280,6 +271,13 @@ export const PatientReports: React.FC = () => {
                   <span className="text-[10px] font-bold uppercase bg-slate-100 text-slate-700 px-2 py-0.5 rounded">
                     {rep.fileName.split('.').pop()}
                   </span>
+                  <button
+                    onClick={() => api.downloadReportFile(rep.reportId, rep.fileName)}
+                    className="p-1.5 text-slate-400 hover:text-clinical-600 hover:bg-slate-100 rounded-lg transition-colors"
+                    title="Download document"
+                  >
+                    <Download className="w-4 h-4" />
+                  </button>
                   <button
                     onClick={() => handleDelete(rep.reportId, rep.fileName)}
                     className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"

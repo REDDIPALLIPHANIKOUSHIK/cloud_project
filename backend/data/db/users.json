@@ -1,35 +1,51 @@
 {
-  "uid_demo_doctor": {
-    "uid": "uid_demo_doctor",
-    "email": "doctor@cloudproject.demo",
-    "fullName": "Dr. Sarah Chen, MD",
+  "uid_test_patient": {
+    "uid": "uid_test_patient",
+    "role": "patient",
+    "fullName": "Test Patient",
+    "accountStatus": "active"
+  },
+  "uid_test_doctor": {
+    "uid": "uid_test_doctor",
     "role": "doctor",
-    "accountStatus": "active",
-    "createdAt": "2026-01-15T09:00:00Z"
+    "fullName": "Test Doctor",
+    "accountStatus": "active"
   },
-  "uid_demo_patient": {
-    "uid": "uid_demo_patient",
-    "email": "patient@cloudproject.demo",
-    "fullName": "Alex Mercer",
-    "role": "patient",
-    "accountStatus": "active",
-    "createdAt": "2026-02-01T10:00:00Z"
-  },
-  "uid_demo_admin": {
-    "uid": "uid_demo_admin",
-    "email": "admin@cloudproject.demo",
-    "fullName": "System Administrator",
+  "uid_test_admin": {
+    "uid": "uid_test_admin",
+    "email": "test_admin@test.local",
+    "fullName": "Test Admin",
     "role": "admin",
-    "accountStatus": "active",
-    "createdAt": "2026-01-01T00:00:00Z"
+    "accountStatus": "active"
   },
-  "usr_00f25cc78d": {
-    "uid": "usr_00f25cc78d",
-    "email": "bob@gmail.com",
-    "fullName": "bob",
+  "usr_45b8130cc655": {
+    "uid": "usr_45b8130cc655",
+    "email": "test_patient_new@example.com",
+    "fullName": "Jane Doe",
     "role": "patient",
+    "passwordHash": "f342f8474539e561e534229e75916dd2:2b5c91fe21bba1e098d7e89f4d0b6df3c52e70833b132366b56a67f8eb6c9297",
     "accountStatus": "active",
-    "createdAt": "2026-10-12T09:53:38.852891+00:00",
-    "updatedAt": "2026-10-12T09:53:38.852891+00:00"
+    "createdAt": "2026-10-21T06:31:57.491721+00:00",
+    "updatedAt": "2026-10-21T06:31:57.491721+00:00"
+  },
+  "usr_b31a5ce41a99": {
+    "uid": "usr_b31a5ce41a99",
+    "email": "test_pat_323aecea@example.com",
+    "fullName": "Jane Doe",
+    "role": "patient",
+    "passwordHash": "68caf72c8115480c7a7bcc6fd4ea56fc:d9b98ef8b8207eb84039ba225009a3cc045fbed24f9081eba20ec28a8cbab15c",
+    "accountStatus": "active",
+    "createdAt": "2026-10-21T06:33:02.136555+00:00",
+    "updatedAt": "2026-10-21T06:33:02.136555+00:00"
+  },
+  "usr_f6a0ff77f835": {
+    "uid": "usr_f6a0ff77f835",
+    "email": "test_pat_61669775@example.com",
+    "fullName": "Jane Doe",
+    "role": "patient",
+    "passwordHash": "6d363949f0c6c7e2615d0c8c82e7e550:492ee2b872592ed7bcf53db30ea31270c7fcf9d196d5300068eee8eb317edd7e",
+    "accountStatus": "active",
+    "createdAt": "2026-10-21T06:39:39.456050+00:00",
+    "updatedAt": "2026-10-21T06:39:39.456050+00:00"
   }
 }

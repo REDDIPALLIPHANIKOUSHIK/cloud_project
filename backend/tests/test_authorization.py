@@ -32,19 +32,28 @@ def test_unauthorized_doctor_access_forbidden(client):
 
 
 def test_revoked_doctor_access_blocks_immediately(client):
+    # Setup isolated test fixtures for doctor and patient
+    doc_id = "uid_test_doctor"
+    db.set("users", doc_id, {"uid": doc_id, "role": "doctor", "fullName": "Test Doctor", "accountStatus": "active"})
+    db.set("doctors", doc_id, {"doctorId": doc_id, "fullName": "Test Doctor", "verificationStatus": "verified"})
+
+    pat_id = "uid_test_patient"
+    db.set("users", pat_id, {"uid": pat_id, "role": "patient", "fullName": "Test Patient", "accountStatus": "active"})
+    db.set("patients", pat_id, {"patientId": pat_id, "fullName": "Test Patient"})
+
     # Grant access to doctor first
     grant_res = client.post(
         "/api/v1/doctor-access",
         headers={"Authorization": "Bearer demo-patient"},
-        json={"doctorId": "uid_demo_doctor", "purpose": "Testing revocation"}
+        json={"doctorId": doc_id, "purpose": "Testing revocation"}
     )
     assert grant_res.status_code in [200, 201]
     grant_data = grant_res.get_json()
     access_id = grant_data.get("accessGrant", {}).get("accessId")
 
-    # Doctor can now access demo-patient
+    # Doctor can now access test-patient
     access_res = client.get(
-        "/api/v1/doctor/patients/uid_demo_patient",
+        f"/api/v1/doctor/patients/{pat_id}",
         headers={"Authorization": "Bearer demo-doctor"}
     )
     assert access_res.status_code == 200
@@ -58,7 +67,7 @@ def test_revoked_doctor_access_blocks_immediately(client):
 
     # Doctor is now blocked
     blocked_res = client.get(
-        "/api/v1/doctor/patients/uid_demo_patient",
+        f"/api/v1/doctor/patients/{pat_id}",
         headers={"Authorization": "Bearer demo-doctor"}
     )
     assert blocked_res.status_code == 403

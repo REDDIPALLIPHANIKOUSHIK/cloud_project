@@ -1,43 +1,8 @@
 {
-  "rec_seed_001": {
-    "recordId": "rec_seed_001",
-    "patientId": "uid_demo_patient",
-    "createdBy": "uid_demo_patient",
-    "creatorRole": "patient",
-    "symptoms": [
-      "Occasional exertional chest tightness",
-      "Mild fatigue"
-    ],
-    "medicalHistory": [
-      "Hypertension (mild)",
-      "Hyperlipidemia"
-    ],
-    "familyHistory": [
-      "Father had myocardial infarction at age 58"
-    ],
-    "allergies": [
-      "Penicillin"
-    ],
-    "medications": [
-      "Atorvastatin 20mg daily",
-      "Amlodipine 5mg daily"
-    ],
-    "vitalSigns": {
-      "bloodPressureSystolic": 138,
-      "bloodPressureDiastolic": 86,
-      "heartRate": 74,
-      "oxygenSaturation": 98,
-      "temperature": 98.4,
-      "weightKg": 79.5,
-      "heightCm": 178
-    },
-    "notes": "Patient reports chest pressure when climbing steep stairs. Blood pressure reasonably controlled on current regimen.",
-    "createdAt": "2026-02-10T14:30:00Z"
-  },
-  "rec_31eee6a59677": {
-    "recordId": "rec_31eee6a59677",
-    "patientId": "uid_demo_patient",
-    "createdBy": "uid_demo_patient",
+  "rec_f133034b591d": {
+    "recordId": "rec_f133034b591d",
+    "patientId": "uid_test_patient",
+    "createdBy": "uid_test_patient",
     "creatorRole": "patient",
     "symptoms": [
       "Dyspnea on exertion"
@@ -61,13 +26,13 @@
       "heightCm": null
     },
     "notes": "Patient follow-up check.",
-    "createdAt": "2026-10-12T08:50:18.154090+00:00",
-    "updatedAt": "2026-10-12T08:50:18.154090+00:00"
+    "createdAt": "2026-10-21T06:29:53.104743+00:00",
+    "updatedAt": "2026-10-21T06:29:53.104743+00:00"
   },
-  "rec_2234b7b91118": {
-    "recordId": "rec_2234b7b91118",
-    "patientId": "uid_demo_patient",
-    "createdBy": "uid_demo_patient",
+  "rec_a507a36c8133": {
+    "recordId": "rec_a507a36c8133",
+    "patientId": "uid_test_patient",
+    "createdBy": "uid_test_patient",
     "creatorRole": "patient",
     "symptoms": [
       "Dyspnea on exertion"
@@ -91,13 +56,13 @@
       "heightCm": null
     },
     "notes": "Patient follow-up check.",
-    "createdAt": "2026-10-12T08:50:51.681848+00:00",
-    "updatedAt": "2026-10-12T08:50:51.681848+00:00"
+    "createdAt": "2026-10-21T06:31:57.419301+00:00",
+    "updatedAt": "2026-10-21T06:31:57.419301+00:00"
   },
-  "rec_cae420103d20": {
-    "recordId": "rec_cae420103d20",
-    "patientId": "uid_demo_patient",
-    "createdBy": "uid_demo_patient",
+  "rec_023f76af24a4": {
+    "recordId": "rec_023f76af24a4",
+    "patientId": "uid_test_patient",
+    "createdBy": "uid_test_patient",
     "creatorRole": "patient",
     "symptoms": [
       "Dyspnea on exertion"
@@ -121,13 +86,13 @@
       "heightCm": null
     },
     "notes": "Patient follow-up check.",
-    "createdAt": "2026-10-12T09:14:19.209940+00:00",
-    "updatedAt": "2026-10-12T09:14:19.209940+00:00"
+    "createdAt": "2026-10-21T06:32:33.662195+00:00",
+    "updatedAt": "2026-10-21T06:32:33.662195+00:00"
   },
-  "rec_f8db1c4e59f7": {
-    "recordId": "rec_f8db1c4e59f7",
-    "patientId": "uid_demo_patient",
-    "createdBy": "uid_demo_patient",
+  "rec_5bcb278dba67": {
+    "recordId": "rec_5bcb278dba67",
+    "patientId": "uid_test_patient",
+    "createdBy": "uid_test_patient",
     "creatorRole": "patient",
     "symptoms": [
       "Dyspnea on exertion"
@@ -151,7 +116,37 @@
       "heightCm": null
     },
     "notes": "Patient follow-up check.",
-    "createdAt": "2026-10-12T09:50:38.717927+00:00",
-    "updatedAt": "2026-10-12T09:50:38.717927+00:00"
+    "createdAt": "2026-10-21T06:33:02.053257+00:00",
+    "updatedAt": "2026-10-21T06:33:02.053257+00:00"
+  },
+  "rec_2499a93e710c": {
+    "recordId": "rec_2499a93e710c",
+    "patientId": "uid_test_patient",
+    "createdBy": "uid_test_patient",
+    "creatorRole": "patient",
+    "symptoms": [
+      "Dyspnea on exertion"
+    ],
+    "medicalHistory": [],
+    "familyHistory": [],
+    "allergies": [
+      "Sulfa"
+    ],
+    "medications": [
+      "Metoprolol 25mg"
+    ],
+    "vitalSigns": {
+      "bloodPressureSystolic": 135.0,
+      "bloodPressureDiastolic": 85.0,
+      "heartRate": 68.0,
+      "temperature": null,
+      "respiratoryRate": null,
+      "oxygenSaturation": null,
+      "weightKg": null,
+      "heightCm": null
+    },
+    "notes": "Patient follow-up check.",
+    "createdAt": "2026-10-21T06:39:39.374748+00:00",
+    "updatedAt": "2026-10-21T06:39:39.374748+00:00"
   }
 }

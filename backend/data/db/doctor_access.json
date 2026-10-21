@@ -1,42 +1,42 @@
 {
-  "acc_seed_001": {
-    "accessId": "acc_seed_001",
-    "patientId": "uid_demo_patient",
-    "doctorId": "uid_demo_doctor",
-    "purpose": "Cardiovascular assessment and consultation",
-    "status": "revoked",
-    "grantedBy": "uid_demo_patient",
-    "grantedAt": "2026-02-12T11:00:00Z",
-    "revokedAt": "2026-10-12T08:50:18.271198+00:00"
-  },
-  "acc_37dc408a0d08": {
-    "accessId": "acc_37dc408a0d08",
-    "patientId": "uid_demo_patient",
-    "doctorId": "uid_demo_doctor",
+  "acc_752e58b3cca6": {
+    "accessId": "acc_752e58b3cca6",
+    "patientId": "uid_test_patient",
+    "doctorId": "uid_test_doctor",
     "purpose": "Testing revocation",
     "status": "revoked",
-    "grantedBy": "uid_demo_patient",
-    "grantedAt": "2026-10-12T08:50:51.769628+00:00",
-    "revokedAt": "2026-10-12T08:50:51.846908+00:00"
+    "grantedBy": "uid_test_patient",
+    "grantedAt": "2026-10-21T06:31:58.254504+00:00",
+    "revokedAt": "2026-10-21T06:31:58.369067+00:00"
   },
-  "acc_df7a62f81299": {
-    "accessId": "acc_df7a62f81299",
-    "patientId": "uid_demo_patient",
-    "doctorId": "uid_demo_doctor",
+  "acc_6aa3ca6e0064": {
+    "accessId": "acc_6aa3ca6e0064",
+    "patientId": "uid_test_patient",
+    "doctorId": "uid_test_doctor",
     "purpose": "Testing revocation",
     "status": "revoked",
-    "grantedBy": "uid_demo_patient",
-    "grantedAt": "2026-10-12T09:14:19.294064+00:00",
-    "revokedAt": "2026-10-12T09:14:19.372998+00:00"
+    "grantedBy": "uid_test_patient",
+    "grantedAt": "2026-10-21T06:32:34.213247+00:00",
+    "revokedAt": "2026-10-21T06:32:34.310948+00:00"
   },
-  "acc_3a114ac72957": {
-    "accessId": "acc_3a114ac72957",
-    "patientId": "uid_demo_patient",
-    "doctorId": "uid_demo_doctor",
+  "acc_694436a89079": {
+    "accessId": "acc_694436a89079",
+    "patientId": "uid_test_patient",
+    "doctorId": "uid_test_doctor",
     "purpose": "Testing revocation",
     "status": "revoked",
-    "grantedBy": "uid_demo_patient",
-    "grantedAt": "2026-10-12T09:50:38.853017+00:00",
-    "revokedAt": "2026-10-12T09:50:38.922415+00:00"
+    "grantedBy": "uid_test_patient",
+    "grantedAt": "2026-10-21T06:33:02.512510+00:00",
+    "revokedAt": "2026-10-21T06:33:02.611835+00:00"
+  },
+  "acc_c92cb1e2f7d6": {
+    "accessId": "acc_c92cb1e2f7d6",
+    "patientId": "uid_test_patient",
+    "doctorId": "uid_test_doctor",
+    "purpose": "Testing revocation",
+    "status": "revoked",
+    "grantedBy": "uid_test_patient",
+    "grantedAt": "2026-10-21T06:39:39.824683+00:00",
+    "revokedAt": "2026-10-21T06:39:39.924653+00:00"
   }
 }
