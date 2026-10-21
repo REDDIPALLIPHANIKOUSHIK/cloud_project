@@ -45,48 +45,6 @@ export const PatientPrediction: React.FC = () => {
 
   const [symptomInput, setSymptomInput] = useState('');
 
-  // Preset Clinical Loaders
-  const loadHighRiskPreset = () => {
-    setFormData({
-      age: 67,
-      sex: 1,
-      cp: 4, // Asymptomatic / ischemic
-      trestbps: 165,
-      chol: 286,
-      fbs: 1,
-      restecg: 2,
-      thalach: 108,
-      exang: 1, // Exercise angina
-      oldpeak: 2.8,
-      slope: 2,
-      ca: 3,
-      thal: 7, // Reversible defect
-      reported_symptoms: ['Exertional chest pressure', 'Shortness of breath on walking'],
-      additional_notes: 'Patient reports progressive heaviness in chest during mild exertion.',
-    });
-    setPredictionResult(null);
-  };
-
-  const loadLowRiskPreset = () => {
-    setFormData({
-      age: 34,
-      sex: 0,
-      cp: 2,
-      trestbps: 115,
-      chol: 175,
-      fbs: 0,
-      restecg: 0,
-      thalach: 172,
-      exang: 0,
-      oldpeak: 0.0,
-      slope: 1,
-      ca: 0,
-      thal: 3,
-      reported_symptoms: ['None', 'Routine wellness inquiry'],
-      additional_notes: 'Asymptomatic individual undergoing baseline screening.',
-    });
-    setPredictionResult(null);
-  };
 
   const handleAddSymptom = () => {
     if (symptomInput.trim()) {
@@ -132,25 +90,6 @@ export const PatientPrediction: React.FC = () => {
           <p className="text-xs text-slate-500 mt-0.5">
             Evaluate compatible structured clinical indicators using a trained Random Forest classifier.
           </p>
-        </div>
-
-        {/* Preset sample buttons */}
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[11px] font-bold text-slate-400 uppercase">Load Test Scenarios:</span>
-          <button
-            type="button"
-            onClick={loadHighRiskPreset}
-            className="px-3 py-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition-colors"
-          >
-            High Risk Sample
-          </button>
-          <button
-            type="button"
-            onClick={loadLowRiskPreset}
-            className="px-3 py-1.5 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-700 border border-teal-200 text-xs font-bold transition-colors"
-          >
-            Low Risk Sample
-          </button>
         </div>
       </div>
 

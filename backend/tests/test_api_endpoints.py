@@ -27,7 +27,7 @@ def test_unauthorized_request_rejected(client):
 
 
 def test_authenticated_profile_and_sync(client):
-    res = client.get("/api/v1/me", headers={"Authorization": "Bearer demo-patient"})
+    res = client.get("/api/v1/me", headers={"Authorization": "Bearer test-patient"})
     assert res.status_code == 200
     data = res.get_json()
     assert data["user"]["role"] == "patient"
@@ -52,7 +52,7 @@ def test_prediction_endpoint_with_valid_data(client):
     }
     res = client.post(
         "/api/v1/predict",
-        headers={"Authorization": "Bearer demo-patient"},
+        headers={"Authorization": "Bearer test-patient"},
         json=valid_payload
     )
     assert res.status_code == 201
@@ -71,7 +71,7 @@ def test_prediction_endpoint_validation_failure(client):
     }
     res = client.post(
         "/api/v1/predict",
-        headers={"Authorization": "Bearer demo-patient"},
+        headers={"Authorization": "Bearer test-patient"},
         json=invalid_payload
     )
     assert res.status_code == 422
@@ -93,7 +93,7 @@ def test_medical_records_crud(client):
     }
     create_res = client.post(
         "/api/v1/medical-records",
-        headers={"Authorization": "Bearer demo-patient"},
+        headers={"Authorization": "Bearer test-patient"},
         json=payload
     )
     assert create_res.status_code == 201
@@ -102,7 +102,7 @@ def test_medical_records_crud(client):
 
     list_res = client.get(
         "/api/v1/medical-records",
-        headers={"Authorization": "Bearer demo-patient"}
+        headers={"Authorization": "Bearer test-patient"}
     )
     assert list_res.status_code == 200
     list_data = list_res.get_json()
@@ -151,7 +151,7 @@ def test_document_upload_and_download(client):
     }
     upload_res = client.post(
         "/api/v1/reports/upload",
-        headers={"Authorization": "Bearer demo-patient"},
+        headers={"Authorization": "Bearer test-patient"},
         data=data,
         content_type="multipart/form-data"
     )
@@ -163,7 +163,7 @@ def test_document_upload_and_download(client):
     # Download uploaded document
     download_res = client.get(
         f"/api/v1/reports/{report_id}/download",
-        headers={"Authorization": "Bearer demo-patient"}
+        headers={"Authorization": "Bearer test-patient"}
     )
     assert download_res.status_code == 200
     assert download_res.data == b"%PDF-1.4 test document content"
@@ -171,6 +171,6 @@ def test_document_upload_and_download(client):
     # Delete document
     del_res = client.delete(
         f"/api/v1/reports/{report_id}",
-        headers={"Authorization": "Bearer demo-patient"}
+        headers={"Authorization": "Bearer test-patient"}
     )
     assert del_res.status_code == 200

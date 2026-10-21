@@ -75,8 +75,8 @@ def get_current_user_from_token() -> Optional[Dict[str, Any]]:
         is_testing = False
 
     if is_testing:
-        if token.startswith("demo-"):
-            role_part = token.replace("demo-", "")
+        if token.startswith("test-"):
+            role_part = token.replace("test-", "")
             if role_part in ["patient", "doctor", "admin"]:
                 uid = f"uid_test_{role_part}"
                 user_doc = db.get("users", uid)

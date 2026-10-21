@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Activity, Shield, LogOut, User, Stethoscope, Settings } from 'lucide-react';
+import { Activity, LogOut } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { StatusBadge } from '../common/StatusBadge';
 
 export const Navbar: React.FC = () => {
-  const { user, role, logout, loginAsDemo } = useAuth();
+  const { user, role, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -41,46 +41,8 @@ export const Navbar: React.FC = () => {
             </Link>
           </div>
 
-          {/* Center/Right Nav & Demo Role Switcher */}
+          {/* Right Header Navigation */}
           <div className="flex items-center gap-3">
-            {/* Quick Demo Role Switcher for seamless testing */}
-            <div className="hidden md:flex items-center gap-1.5 bg-slate-100 p-1 rounded-lg border border-slate-200 text-xs">
-              <span className="text-slate-500 font-semibold px-2">Demo Role:</span>
-              <button
-                onClick={() => loginAsDemo('patient')}
-                className={`px-2.5 py-1 rounded font-medium transition-all ${
-                  role === 'patient'
-                    ? 'bg-white text-clinical-700 shadow-xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Switch to Demo Patient Role"
-              >
-                Patient
-              </button>
-              <button
-                onClick={() => loginAsDemo('doctor')}
-                className={`px-2.5 py-1 rounded font-medium transition-all ${
-                  role === 'doctor'
-                    ? 'bg-white text-clinical-700 shadow-xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Switch to Demo Doctor Role"
-              >
-                Doctor
-              </button>
-              <button
-                onClick={() => loginAsDemo('admin')}
-                className={`px-2.5 py-1 rounded font-medium transition-all ${
-                  role === 'admin'
-                    ? 'bg-white text-clinical-700 shadow-xs font-bold'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-                title="Switch to Demo Admin Role"
-              >
-                Admin
-              </button>
-            </div>
-
             {user ? (
               <div className="flex items-center gap-3">
                 <StatusBadge status={role} type="role" />
@@ -90,10 +52,11 @@ export const Navbar: React.FC = () => {
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                  title="Log out of session"
+                  className="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center gap-1.5 text-xs font-medium"
+                  title="Sign out of account"
                 >
                   <LogOut className="w-4 h-4" />
+                  <span className="hidden md:inline">Sign Out</span>
                 </button>
               </div>
             ) : (
@@ -102,7 +65,7 @@ export const Navbar: React.FC = () => {
                   to="/login"
                   className="text-sm font-semibold text-slate-700 hover:text-clinical-700 px-3 py-1.5 rounded-lg transition-colors"
                 >
-                  Log in
+                  Log In
                 </Link>
                 <Link
                   to="/register"
