@@ -6,6 +6,8 @@ import { Sidebar } from './components/layout/Sidebar';
 import { Footer } from './components/layout/Footer';
 import { ProtectedRoute } from './components/common/ProtectedRoute';
 
+import { ErrorBoundary } from './components/common/ErrorBoundary';
+
 // Public Pages
 import { LandingPage } from './pages/LandingPage';
 import { LoginPage } from './pages/LoginPage';
@@ -68,71 +70,73 @@ const PublicLayout: React.FC = () => {
 
 export const App: React.FC = () => {
   return (
-    <AuthProvider>
-      <Router>
-        <Routes>
-          {/* Public Routes */}
-          <Route element={<PublicLayout />}>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/unauthorized" element={<UnauthorizedPage />} />
-          </Route>
+    <ErrorBoundary>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            {/* Public Routes */}
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<RegisterPage />} />
+              <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+              <Route path="/unauthorized" element={<UnauthorizedPage />} />
+            </Route>
 
-          {/* Patient Routes */}
-          <Route
-            element={
-              <ProtectedRoute allowedRoles={['patient']}>
-                <PortalLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/patient/dashboard" element={<PatientDashboard />} />
-            <Route path="/patient/profile" element={<PatientProfile />} />
-            <Route path="/patient/records" element={<PatientRecords />} />
-            <Route path="/patient/reports" element={<PatientReports />} />
-            <Route path="/patient/prediction" element={<PatientPrediction />} />
-            <Route path="/patient/predictions" element={<PatientPredictionsList />} />
-            <Route path="/patient/access" element={<PatientAccess />} />
-            <Route path="/patient/settings" element={<PatientSettings />} />
-          </Route>
+            {/* Patient Routes */}
+            <Route
+              element={
+                <ProtectedRoute allowedRoles={['patient']}>
+                  <PortalLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/patient/dashboard" element={<PatientDashboard />} />
+              <Route path="/patient/profile" element={<PatientProfile />} />
+              <Route path="/patient/records" element={<PatientRecords />} />
+              <Route path="/patient/reports" element={<PatientReports />} />
+              <Route path="/patient/prediction" element={<PatientPrediction />} />
+              <Route path="/patient/predictions" element={<PatientPredictionsList />} />
+              <Route path="/patient/access" element={<PatientAccess />} />
+              <Route path="/patient/settings" element={<PatientSettings />} />
+            </Route>
 
-          {/* Doctor Routes */}
-          <Route
-            element={
-              <ProtectedRoute allowedRoles={['doctor']}>
-                <PortalLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
-            <Route path="/doctor/patients" element={<DoctorPatients />} />
-            <Route path="/doctor/patients/:patientId" element={<DoctorPatientDetail />} />
-            <Route path="/doctor/reports" element={<DoctorReports />} />
-            <Route path="/doctor/notes" element={<DoctorNotes />} />
-            <Route path="/doctor/settings" element={<DoctorSettings />} />
-          </Route>
+            {/* Doctor Routes */}
+            <Route
+              element={
+                <ProtectedRoute allowedRoles={['doctor']}>
+                  <PortalLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
+              <Route path="/doctor/patients" element={<DoctorPatients />} />
+              <Route path="/doctor/patients/:patientId" element={<DoctorPatientDetail />} />
+              <Route path="/doctor/reports" element={<DoctorReports />} />
+              <Route path="/doctor/notes" element={<DoctorNotes />} />
+              <Route path="/doctor/settings" element={<DoctorSettings />} />
+            </Route>
 
-          {/* Admin Routes */}
-          <Route
-            element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <PortalLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
-            <Route path="/admin/users" element={<AdminUsers />} />
-            <Route path="/admin/activity" element={<AdminActivity />} />
-            <Route path="/admin/settings" element={<AdminSettings />} />
-          </Route>
+            {/* Admin Routes */}
+            <Route
+              element={
+                <ProtectedRoute allowedRoles={['admin']}>
+                  <PortalLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/activity" element={<AdminActivity />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
+            </Route>
 
-          {/* 404 Route */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </Router>
-    </AuthProvider>
+            {/* 404 Route */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </ErrorBoundary>
   );
 };
 

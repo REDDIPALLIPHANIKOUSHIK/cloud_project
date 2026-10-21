@@ -27,25 +27,42 @@ const ROLE_COLORS = {
 };
 
 export const AdminDashboard: React.FC = () => {
-  const [stats, setStats] = useState<any>(null);
+  const DEFAULT_STATS = {
+    totalUsers: 0,
+    roleDistribution: { patient: 0, doctor: 0, admin: 1 },
+    riskDistribution: { 'Low Risk': 0, 'Moderate Risk': 0, 'Elevated Risk': 0, 'High Risk': 0 },
+    totalPatients: 0,
+    totalDoctors: 0,
+    totalPredictions: 0,
+    totalRecords: 0,
+    totalDocuments: 0,
+    totalClinicalNotes: 0,
+    totalAuditEvents: 0
+  };
+
+  const [stats, setStats] = useState<any>(DEFAULT_STATS);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchStats = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = await api.getAdminStats();
+      if (data) setStats(data);
+    } catch (err: any) {
+      console.warn('Could not fetch admin stats:', err);
+      setError(err.message || 'Unable to load real-time admin metrics.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        setLoading(true);
-        const data = await api.getAdminStats();
-        setStats(data);
-      } catch (err) {
-        console.warn('Could not fetch admin stats');
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchStats();
   }, []);
 
-  if (loading || !stats) {
+  if (loading) {
     return (
       <div className="text-center py-20">
         <div className="w-8 h-8 border-4 border-purple-600 border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
@@ -69,6 +86,12 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto">
+      {error && (
+        <div className="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs flex items-center justify-between">
+          <span>{error}</span>
+          <button onClick={fetchStats} className="font-bold underline text-amber-900 ml-3">Retry</button>
+        </div>
+      )}
       {/* Admin Welcome Header */}
       <div className="bg-gradient-to-r from-navy-900 via-purple-950 to-slate-900 text-white rounded-2xl p-6 sm:p-8 shadow-sm">
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-purple-200 text-xs font-semibold mb-3">

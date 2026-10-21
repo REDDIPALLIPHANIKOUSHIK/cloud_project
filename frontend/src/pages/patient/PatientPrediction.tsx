@@ -135,38 +135,42 @@ export const PatientPrediction: React.FC = () => {
           </div>
 
           {/* Specialist Routing Engine Recommendation Card */}
-          <div className="bg-white border border-clinical-200 rounded-xl p-5 shadow-xs mb-6">
-            <div className="flex items-start gap-4">
-              <div className="p-3 bg-clinical-600 text-white rounded-xl shadow-xs">
-                <Stethoscope className="w-6 h-6" />
-              </div>
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center justify-between gap-2">
-                  <span className="text-xs font-bold text-clinical-700 uppercase tracking-wider">
-                    Recommended Clinical Specialty
-                  </span>
-                  <span className="text-xs uppercase font-extrabold px-2 py-0.5 rounded bg-clinical-100 text-clinical-800">
-                    Priority: {predictionResult.specialistRecommendation.urgency}
-                  </span>
+          {predictionResult.specialistRecommendation && (
+            <div className="bg-white border border-clinical-200 rounded-xl p-5 shadow-xs mb-6">
+              <div className="flex items-start gap-4">
+                <div className="p-3 bg-clinical-600 text-white rounded-xl shadow-xs">
+                  <Stethoscope className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-navy-900 mt-1">
-                  {predictionResult.specialistRecommendation.specialty}
-                </h3>
-                <p className="text-sm text-slate-700 mt-2 leading-relaxed">
-                  {predictionResult.specialistRecommendation.reason}
-                </p>
-
-                <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                  <span className="font-semibold">Evidence Basis:</span>
-                  {predictionResult.specialistRecommendation.basedOn.map((b) => (
-                    <span key={b} className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-[11px]">
-                      {b.replace(/_/g, ' ')}
+                <div className="flex-1">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-xs font-bold text-clinical-700 uppercase tracking-wider">
+                      Recommended Clinical Specialty
                     </span>
-                  ))}
+                    <span className="text-xs uppercase font-extrabold px-2 py-0.5 rounded bg-clinical-100 text-clinical-800">
+                      Priority: {predictionResult.specialistRecommendation.urgency || 'routine'}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold text-navy-900 mt-1">
+                    {predictionResult.specialistRecommendation.specialty || 'General Physician'}
+                  </h3>
+                  <p className="text-sm text-slate-700 mt-2 leading-relaxed">
+                    {predictionResult.specialistRecommendation.reason || ''}
+                  </p>
+
+                  {predictionResult.specialistRecommendation.basedOn && predictionResult.specialistRecommendation.basedOn.length > 0 && (
+                    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                      <span className="font-semibold">Evidence Basis:</span>
+                      {predictionResult.specialistRecommendation.basedOn.map((b) => (
+                        <span key={b} className="bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full text-[11px]">
+                          {b.replace(/_/g, ' ')}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
+          )}
 
           {/* Clinical Warnings if any */}
           {predictionResult.warnings && predictionResult.warnings.length > 0 && (

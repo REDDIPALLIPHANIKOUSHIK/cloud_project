@@ -107,8 +107,8 @@ export const DoctorPatientDetail: React.FC = () => {
     );
   }
 
-  const { patient, records = [], reports = [], predictions = [], clinicalNotes = [] } = data;
-  const latestPred = predictions[0];
+  const { patient = {}, records = [], reports = [], predictions = [], clinicalNotes = [] } = data || {};
+  const latestPred = predictions && predictions.length > 0 ? predictions[0] : null;
 
   return (
     <div className="space-y-6 max-w-5xl mx-auto">
